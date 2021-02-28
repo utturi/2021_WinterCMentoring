@@ -26,6 +26,7 @@ int menu(void){
 	return menu;
 }
 
+
 double grade(int grade){
 	double res = 0;
 	if((grade>=0&&grade<=100)!=1){
