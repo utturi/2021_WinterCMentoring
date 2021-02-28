@@ -11,7 +11,6 @@ typedef struct Node{
 	double avg;
 }student;
 
-
 int menu(void){
 	int menu;
 	do{
