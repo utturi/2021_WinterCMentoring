@@ -121,10 +121,8 @@ char * chargrade(double score){
 			strcpy(grade, "D");
 		}
 	strcat(grade,((score-(int)score/1)==0.5)?"+":((score-(int)score/1)==0.3)?"0":"-");
-	//printf("      %s", grade);
 	if(score == 0){
 		strcpy(grade,"F");
-		//printf("      %s", grade);
 	}
 	return grade;
 }
