@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> // 하다 말았어요......
 
 typedef struct student{
     char name[50];
