@@ -142,7 +142,6 @@ void change_page(int num, student * head){
 	return;
 }
 
-
 int main(void){
 	// 파일에서 연결리스트로 불러오는 함수 추가할 것
 	student *head = (student*)malloc(sizeof(student));
