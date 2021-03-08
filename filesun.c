@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h> // 하다 말았어요......
+#include <stdlib.h> 
 
 typedef struct student{
     char name[50];
@@ -80,7 +80,6 @@ void inputgrade()
     scanf("%d", test1->abcf);
     
     fclose(fp);
-    exit(0);
     return;
 }
 void inputstudent()
@@ -103,6 +102,5 @@ void inputstudent()
     scanf("%s", test2->psd);
 
     fclose(fpp);
-    exit(0);
     return;
 }
