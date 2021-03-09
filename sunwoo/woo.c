@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+//비밀번호.. ...
 
 typedef struct student{
     char name[50];
