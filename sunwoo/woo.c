@@ -101,7 +101,9 @@ void checkgrade()
         printf("비밀번호 : ");
         scanf("%s", pw);
         while(scur2 != NULL){
-            if(pw == scur2->psd){
+            if(n == scur2->code && pw == scur2->psd){
+                printf("<%s>님의 성적\n", scur2->name);
+                //printf("%s : ", scur2->)
                 a++;
                 break;
             }
