@@ -1,20 +1,20 @@
-//¿¬°á¸®½ºÆ®¸¦......¾îÄÉ......½á¾ßÇÒÁö ¸ô°Ù´Ù...........
+//ì—°ê²°ë¦¬ìŠ¤íŠ¸ë¥¼......ì–´ì¼€......ì¨ì•¼í• ì§€ ëª°ê²Ÿë‹¤...........
 
 #pragma warning(disable:4996)
 #include <stdio.h>
 #include <stdlib.h>
 typedef struct student {
-	char name[20]; //ÇĞ»ıÀÌ¸§
-	int ID; //ÇĞ¹ø
-	char password[30]; //ºñ¹Ğ¹øÈ£
+	char name[20]; //í•™ìƒì´ë¦„
+	int ID; //í•™ë²ˆ
+	char password[30]; //ë¹„ë°€ë²ˆí˜¸
 	struct student* next;
 }Student;
 
 typedef struct grade {
-	int ID; //ÇĞ¹ø
-	char classname[20]; //°ú¸ñÀÌ¸§
-	int grade; //¼ºÀû
-	int credit; //ÇĞÁ¡
+	int ID; //í•™ë²ˆ
+	char classname[20]; //ê³¼ëª©ì´ë¦„
+	int grade; //ì„±ì 
+	int credit; //í•™ì 
 	struct grade* next;
 }Grade;
 
@@ -38,18 +38,18 @@ int main(void) {
 	grd_tail = NULL;
 
 	while (1) {
-		printf("[ Menu ]\n1. ¼ºÀûÈ®ÀÎ\t2. ¼ºÀûÀÔ·Â\t3. ÇĞ»ıÁ¤º¸µî·Ï\t4. ÇĞ»ıÁ¤º¸»èÁ¦\t0. ÇÁ·Î±×·¥ Á¾·á\n");
+		printf("[ Menu ]\n1. ì„±ì í™•ì¸\t2. ì„±ì ì…ë ¥\t3. í•™ìƒì •ë³´ë“±ë¡\t4. í•™ìƒì •ë³´ì‚­ì œ\t0. í”„ë¡œê·¸ë¨ ì¢…ë£Œ\n");
 		scanf("%d", &res);
 		switch (res) {
-		case1:gradecheck(); //1. ¼ºÀûÈ®ÀÎ
+		case1:gradecheck(); //1. ì„±ì í™•ì¸
 			break;
-		case2:gradeinput(ifp_g); //2. ¼ºÀûÀÔ·Â
+		case2:gradeinput(ifp_g); //2. ì„±ì ì…ë ¥
 			break;
-		case3:registerInfo(ifp_s); //3. ÇĞ»ıÁ¤º¸µî·Ï
+		case3:registerInfo(ifp_s); //3. í•™ìƒì •ë³´ë“±ë¡
 			break;
-		case4:deleteInfo(); //4. ÇĞ»ıÁ¤º¸»èÁ¦
+		case4:deleteInfo(); //4. í•™ìƒì •ë³´ì‚­ì œ
 			break;
-		default: //0. ÇÁ·Î±×·¥ Á¾·á
+		default: //0. í”„ë¡œê·¸ë¨ ì¢…ë£Œ
 			break;
 		};
 	}
@@ -71,13 +71,13 @@ void connect(Student* newNode) {
 void registerInfo(FILE* ifp_s) {
 	Student* newNode;
 
-	printf("ÇĞ»ıÀÌ¸§ : ");
+	printf("í•™ìƒì´ë¦„ : ");
 	scanf("%s", newNode->name);
 
-	printf("ÇĞ¹ø : ");
+	printf("í•™ë²ˆ : ");
 	scanf("%d", &(newNode->ID));
 
-	printf("ºñ¹Ğ¹øÈ£ : ");
+	printf("ë¹„ë°€ë²ˆí˜¸ : ");
 	scanf("%s", newNode->password);
 	connect(newNode);
 	fwrite(newNode, sizeof(Student), 1, ifp_s);
@@ -89,34 +89,34 @@ void gradecheck() {
 	int ID = 0;
 	char password[30];
 
-	printf("ÇĞ¹ø : ");
+	printf("í•™ë²ˆ : ");
 	scanf("%d", ID);
 
-	if (ID) {//¾ø´Â ÇĞ¹øÀÏ °æ¿ì
-		printf("±ÍÇÏÀÇ ÇĞ¹ø Á¤º¸°¡ ¾ø½À´Ï´Ù!\n");
+	if (ID) {//ì—†ëŠ” í•™ë²ˆì¼ ê²½ìš°
+		printf("ê·€í•˜ì˜ í•™ë²ˆ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤!\n");
 	}
 	else {
 		while (1) {
-			printf("ºñ¹Ğ¹øÈ£ : ");
+			printf("ë¹„ë°€ë²ˆí˜¸ : ");
 			scanf("%s", password);
-			if (password) { //ºñ¹Ğ¹øÈ£°¡ ¸ÂÀ» °æ¿ì
-				printf("<%s>´ÔÀÇ ¼ºÀû\n", tmp_std->name);
+			if (password) { //ë¹„ë°€ë²ˆí˜¸ê°€ ë§ì„ ê²½ìš°
+				printf("<%s>ë‹˜ì˜ ì„±ì \n", tmp_std->name);
 				while (tmp_grade != NULL) {
 					printf("%s : %s\n", tmp_grade->classname, tmp_grade->grade);
 					total_credit += *(tmp_grade->credit);
 					total_grade += *(tmp_grade->grade);
 					cnt++;
-					// fseekÀ¸·Î ÀÌµ¿ÇÏ´Â ÄÚµå
-					// ÀüÃ¼¼®Â÷ ÄÚµå
+					// fseekìœ¼ë¡œ ì´ë™í•˜ëŠ” ì½”ë“œ
+					// ì „ì²´ì„ì°¨ ì½”ë“œ
 				}
 
-				printf("\nÀÌ¼öÇĞÁ¡ : %d\n", total_credit);
-				printf("ÆòÁ¡Æò±Õ : %.1lf\n", (double)total_grade / cnt);
-				printf("ÀüÃ¼¼®Â÷ : %d\n", rank);
+				printf("\nì´ìˆ˜í•™ì  : %d\n", total_credit);
+				printf("í‰ì í‰ê·  : %.1lf\n", (double)total_grade / cnt);
+				printf("ì „ì²´ì„ì°¨ : %d\n", rank);
 				break;
 			}
-			else { //ºñ¹Ğ¹øÈ£°¡ Æ²¸± °æ¿ì
-				printf("ºñ¹Ğ¹øÈ£°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù!\n");
+			else { //ë¹„ë°€ë²ˆí˜¸ê°€ í‹€ë¦´ ê²½ìš°
+				printf("ë¹„ë°€ë²ˆí˜¸ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤!\n");
 			}
 		}
 	}
@@ -129,47 +129,47 @@ int gradeinput(FILE* ifp_g) {
 	curr = stu_head;
 	Grade *tmp=(Grade*)malloc(sizeof(Grade));
 	while (1) {
-			printf("ÇĞ¹ø : ");
+			printf("í•™ë²ˆ : ");
 			scanf("%d", &(tmp->ID));
 			for (curr = stu_head; curr != NULL; curr = curr->next) {
 				if (curr->ID == tmp->ID) {
 					break;
 				}
 				else {
-					printf("±ÍÇÏÀÇ ÇĞ¹ø Á¤º¸°¡ ¾ø½À´Ï´Ù!\n");
+					printf("ê·€í•˜ì˜ í•™ë²ˆ ì •ë³´ê°€ ì—†ìŠµë‹ˆë‹¤!\n");
 					free(tmp);
 					return -1;
 				}
 			}
 
-		printf("°ú¸ñ : ");
+		printf("ê³¼ëª© : ");
 		scanf("%s", tmp->classname);
 		
-		printf("¼ºÀû : ");
+		printf("ì„±ì  : ");
 		while (1) {
 			scanf("%d", &(tmp->grade));
 			if (tmp->grade >= 0 && tmp->grade <= 100) {
 				break;
 			}
 			else {
-				printf("1~100 »çÀÌÀÇ ¼ö¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n");
+				printf("1~100 ì‚¬ì´ì˜ ìˆ˜ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n");
 				continue;
 			}
 		}
 		
-		printf("ÇĞÁ¡ : ");
+		printf("í•™ì  : ");
 		while (1) {
 			scanf("%d", &(tmp->credit));
 			if (tmp->credit >= 1 && tmp->credit <= 9) {
 				break;
 			}
 			else { 
-				printf("1~9 »çÀÌÀÇ ¼ö¸¦ ÀÔ·ÂÇØÁÖ¼¼¿ä.\n");
+				printf("1~9 ì‚¬ì´ì˜ ìˆ˜ë¥¼ ì…ë ¥í•´ì£¼ì„¸ìš”.\n");
 				continue;
 			}
 		}
 		fwrite(tmp, sizeof(Grade), 1, ifp_g);
-		printf("¼ºÀûÀ» ´õ ÀÔ·ÂÇÏ½Ã·Á¸é 1, ±×¸¸ ÀÔ·Â ¹ŞÀ¸·Á¸é 0À» ÀÔ·ÂÇÏ½Ã¿À : ");
+		printf("ì„±ì ì„ ë” ì…ë ¥í•˜ì‹œë ¤ë©´ 1, ê·¸ë§Œ ì…ë ¥ ë°›ìœ¼ë ¤ë©´ 0ì„ ì…ë ¥í•˜ì‹œì˜¤ : ");
 		scanf("%d", &num);
 		if (num == 0) {
 			break;
@@ -187,7 +187,7 @@ void deleteInfo(){
 
 
 
-//void gradecheck(char* curr, int grade) { //¼ºÀû ÀÔ·Â -> ÇĞÁ¡
+//void gradecheck(char* curr, int grade) { //ì„±ì  ì…ë ¥ -> í•™ì 
 //	if (grade >= 97 && grade <= 100) {
 //		strcpy(curr, "A+");
 //	}
