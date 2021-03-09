@@ -77,45 +77,39 @@ int main()
 }
 void checkgrade()
 {
-    Student *scur1 = shead;
-    Student *scur2 = shead;
+    Student *scur = shead;
+    Grade *cur = ghead;
     char pw[20];
     int n;
     int a=0;
 
     printf("학번 : ");
     scanf("%d", &n);
-    while(scur1 != NULL){
-        if(n == scur1->code){
+    while(scur != NULL){
+        if(scur->code == n){
             a++;
-            break;
-        }
-        scur1 = scur1->next;
-    }
-    if(a!=1){
-        printf("귀하의 학번 정보가 없습니다!\n");
-        return;
-    }
-
-    while(1){
-        printf("비밀번호 : ");
-        scanf("%s", pw);
-        while(scur2 != NULL){
-            if(n == scur2->code && pw == scur2->psd){
-                printf("<%s>님의 성적\n", scur2->name);
-                //printf("%s : ", scur2->)
-                a++;
-                break;
+            while(a==1){
+                printf("비밀번호 : ");
+                scanf("%s", pw);
+                if(pw == scur->psd){
+                    while(cur != NULL){
+                        if(n == cur->code){
+                            printf("<%s>님의 성적\n", scur->name);
+                            printf("이수학점 : %d", cur->sum);
+                            break;
+                        }
+                        cur = cur->next;
+                    }
+                }
+                else{
+                    printf("비밀번호가 일치하지 않습니다!\n");
+                }
             }
-            scur2 = scur2->next;
-        }
-        if(a==2){
             break;
         }
-        else{
-            printf("비밀번호가 일치하지 않습니다!\n");
-        }
+        scur = scur->next;
     }
+    
 
     return;
 }
