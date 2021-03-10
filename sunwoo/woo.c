@@ -23,7 +23,7 @@ Grade *ghead, *gtail;
 void checkgrade();
 void inputgrade();
 void inputstudent();
-//void delete();
+void delete();
 int main()
 {
     int n;
@@ -61,7 +61,7 @@ int main()
             inputstudent();
         }
         else if(n == 4){
-            //delete();
+            delete();
         }
         else{
             printf("\n");
@@ -92,13 +92,16 @@ void checkgrade()
                 scanf("%s", pw);
                 if(pw == scur->psd){
                     while(cur != NULL){
-                        if(n == cur->code){
-                            printf("<%s>님의 성적\n", scur->name);
+                        if(cur->code == n){
+                            printf("<%s>님의 성적\n\n", scur->name);
                             printf("이수학점 : %d", cur->sum);
+                            //printf("\n평점평균 : ")
+
+                            a++;
                             break;
                         }
                         cur = cur->next;
-                    }
+                    }   
                 }
                 else{
                     printf("비밀번호가 일치하지 않습니다!\n");
@@ -109,11 +112,14 @@ void checkgrade()
         scur = scur->next;
     }
     
+
     return;
 }
 void inputgrade()
 {
     int n=1;
+    int a=0;
+    Student *scur = shead;
     Grade *newNode = (Grade *)malloc(sizeof(Grade));
     newNode->next = NULL;
 
@@ -129,12 +135,22 @@ void inputgrade()
 
         printf("학번 : ");
         scanf("%d", &(newNode->code));
+        while(scur != NULL){
+            if(newNode->code == scur->code){
+                a++;
+            }
+            scur = scur->next;
+        }
+        if(a==0){
+            return;
+        }
         printf("과목 : ");
         scanf("%s", newNode->class);
         printf("성적 : ");
         scanf("%d", &(newNode->grade));
         printf("학점 : ");
         scanf("%d", &(newNode->abcf));
+        //newNode->sum += newNode->abcf;
         printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
         scanf("%d", &n);
         if(n == 0){
@@ -163,6 +179,11 @@ void inputstudent()
     scanf("%d", &(newNode->code));
     printf("비밀번호 : ");
     scanf("%s", newNode->psd);
-    
+
+    return;
+}
+void delete()
+{
+
     return;
 }
