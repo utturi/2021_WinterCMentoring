@@ -4,6 +4,8 @@
 //3. 성적입력에서 Grade 파일 업데이트 시 학번 기준으로 정렬 저장하는거
 //4. 연결리스트 됐는지 확인
 //5. 평점 평균
+//+학번 없을 경우 에러나는 거 고치기
+//
 
 #pragma warning(disable:4996)
 #include <stdio.h>
@@ -30,7 +32,8 @@ typedef struct grade {
 	struct grade* next;
 }Grade;
 
-void connect(Student* newNode); //학생정보 연결
+void stu_connect(Student* newNode); //학생정보 연결
+void grd_connect(Grade* newNode); //성적정보 연결
 void registerInfo(FILE* ifp_s);//3. 학생정보등록	
 int gradecheck(void); //1. 성적확인	
 int gradeinput(FILE* ifp_g);//2. 성적입력
@@ -60,23 +63,27 @@ int main(void) {
 	grd_tail = NULL;
 
 	while (1) {
-		printf("[ Menu ]\n1. 성적확인\t2. 성적입력\t3. 학생정보등록\t4. 학생정보삭제\t0. 프로그램 종료\n");
+		printf("\n[ Menu ]\n1. 성적확인\t2. 성적입력\t3. 학생정보등록\t4. 학생정보삭제\t0. 프로그램 종료\n");
 		scanf("%d", &res);
 		switch (res) {
-		case1:gradecheck(); //1. 성적확인
+		case 0: //0. 프로그램 종료
+			return 0;
+		case 1:gradecheck(); //1. 성적확인
 			break;
-		case2:gradeinput(ifp_g); //2. 성적입력
+		case 2:gradeinput(ifp_g); //2. 성적입력
 			break;
-		case3:registerInfo(ifp_s); //3. 학생정보등록
+		case 3:registerInfo(ifp_s); //3. 학생정보등록
 			break;
-		case4:deleteInfo(); //4. 학생정보삭제
+		case 4:deleteInfo(); //4. 학생정보삭제
 			break;
-		default: //0. 프로그램 종료
-			break;
+		default:
+			printf("0~4 사이의 숫자를 입력해주세요.\n"); 
+   			break;
 		};
 	}
+	return 0;
 }
-void connect(Student* newNode) {
+void stu_connect(Student* newNode) {
 	if (stu_head == NULL)
 	{
 		stu_head = newNode;
@@ -90,7 +97,7 @@ void connect(Student* newNode) {
 }
 void registerInfo(FILE* ifp_s) { //3. 학생정보등록
 	Student* newNode;
-
+	newNode=(Student*)malloc(sizeof(Student));
 	printf("학생이름 : ");
 	scanf("%s", newNode->name);
 
@@ -99,7 +106,7 @@ void registerInfo(FILE* ifp_s) { //3. 학생정보등록
 
 	printf("비밀번호 : ");
 	scanf("%s", newNode->password);
-	connect(newNode);
+	stu_connect(newNode);
 	fwrite(newNode, sizeof(Student), 1, ifp_s);
 }
 int gradecheck() { //1. 성적확인
@@ -233,29 +240,29 @@ int deleteInfo(){
 						while (1) {
 							printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
 							scanf("%c", &c);
-							if (c == 'y') {
+							if(c=='y'){
 								printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
-								stu_tmp = stu_tmp->next;
+								stu_tmp=stu_tmp->next;
 								stu_deleteNode(stu_head, stu_tmp->next, stu_tmp);
 								grd_deleteNode(grd_head, grd_tmp->next, grd_tmp);
 								free(stu_tmp);
 								free(grd_tmp);
 								return 0;
 							}
-							else if (c == 'n') {
-								printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
-								return 0;
-							}
-							else {
-								printf("y랑 n 중에 입력해주세요!\n");
-								continue;
-							}
-						}
+else if(c=='n'){
+	printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
+	return 0;
+}
+else{
+	printf("y랑 n 중에 입력해주세요!\n");
+	continue;
+}
+}
+}
+else{
+									printf("귀하의 학번 정보가 없습니다!\n");
 					}
-					else { //근데 또 이렇게 하면....................아닐때마다 계속 출력되는ㄱ ㅓ 아니가.....
-						printf("귀하의 학번 정보가 없습니다!\n");
 					}
-				}
 			}
 		}
 		else { //비밀번호가 틀릴 경우
@@ -265,6 +272,7 @@ int deleteInfo(){
 	}
 
 }
+
 void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
 	if (prev = NULL) {
 		stu_head = stu_head->next;
@@ -274,6 +282,7 @@ void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
 		free(deleted);
 	}
 }
+
 void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev) {
 	if(prev = NULL) {
 		grd_head = grd_head->next;
