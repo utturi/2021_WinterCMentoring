@@ -218,9 +218,14 @@ void delete()
     scanf("%c", &yorn);
 
     if(yorn == 'y'){
+        if(curs == shead){
+            shead = curs->next;
+        }
+        else{
+            curs->next = curs->next->next; //..????
+        }
 
-
-        //삭제코드
+        //삭제코드  ..??? ? ??
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
     }
 
