@@ -96,6 +96,17 @@ void stu_connect(Student* newNode) {
 		p->next = newNode;
 	}
 }
+void grd_connect(Grade* newNode){
+	if(grd_head==NULL){
+		grd_head=newNode;
+	}
+	else{
+		Grade *p=grd_head;
+		while(p->next!=NULL)
+			p=p->next;
+		p->next=newNode;
+	}
+}
 void registerInfo(FILE* ifp_s) { //3. 학생정보등록
 	Student* newNode;
 	newNode=(Student*)malloc(sizeof(Student));
@@ -157,210 +168,210 @@ int gradecheck() { //1. 성적확인
 					printf("비밀번호가 일치하지 않습니다!\n");
 					continue;
 				}
-				}
-				break;
 			}
+			break;
 		}
 	}
-	int gradeinput(FILE* ifp_g) { //2. 성적입력
-		int  num = 0;
-		Student* curr;
+}
 
-		while (1) {
-			curr = stu_head;
-			Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
-			Student* stu_tmp = (Student*)malloc(sizeof(Student));
+int gradeinput(FILE* ifp_g) { //2. 성적입력
+	int  num = 0;
+	Student* curr;
+	while (1) {
+		curr = stu_head;
+		Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
+		Student* stu_tmp = (Student*)malloc(sizeof(Student));
 
-			printf("학번 : ");
-			scanf("%d", &(grd_tmp->ID));
+		printf("학번 : ");
+		scanf("%d", &(grd_tmp->ID));
 
-			if(curr==NULL){
-				printf("등록된 학번이 아닙니다!\n");
-				free(grd_tmp);
-				break;
-			}
-
-			for (curr = stu_head; curr != NULL; curr = curr->next) { 
-				if (curr->ID == grd_tmp->ID) {
-					break;
-				}
-				else {
-					printf("등록된 학번이 아닙니다!\n");
-					//free(grd_tmp); ============================================================여기
-					return -1;
-				}
-			}
-
-			printf("과목 : ");
-			scanf("%s", grd_tmp->classname);
-
-			printf("성적 : ");
-			while (1) {
-				scanf("%d", &(grd_tmp->grade));
-				if (grd_tmp->grade >= 0 && grd_tmp->grade <= 100) {
-					grd_tmp=gradechange(grd_tmp, stu_tmp); //맞나....?
-					break;
-				}
-				else {
-					printf("1~100 사이의 수를 입력해주세요.\n");
-					continue;
-				}
-			}
-
-			printf("학점 : ");
-			while (1) {
-				scanf("%d", &(grd_tmp->credit));
-				if (grd_tmp->credit >= 1 && grd_tmp->credit <= 9) {
-					break;
-				}
-				else { 
-					printf("1~9 사이의 수를 입력해주세요.\n");
-					continue;
-				}
-			}
-
-			fwrite(grd_tmp, sizeof(Grade), 1, ifp_g); //파일 입력
-			printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
-			scanf("%d", &num);
+		if(curr==NULL){
+			printf("등록된 학번이 아닙니다!\n");
 			free(grd_tmp);
-			free(stu_tmp);
-			if (num == 0) {
+			break;
+		}
+
+		for (curr = stu_head; curr != NULL; curr = curr->next) { 
+			if (curr->ID == grd_tmp->ID) {
 				break;
 			}
 			else {
-				continue;
-			}
-		}
-		return 0;
-	}
-	int deleteInfo(){
-		char key[30];
-		int ID = 0;
-		char c;
-		Student* stu_tmp;
-		Grade* grd_tmp;
-
-		stu_tmp = (Student*)malloc(sizeof(Student));
-		grd_tmp = (Grade*)malloc(sizeof(Grade));
-
-		printf("관리자 비밀번호 : ");
-		scanf("%s", key);
-		while (1) {
-			if (strcmp(key,masterkey)==0) {
-				while(1){
-					printf("학번: ");
-					scanf("%d", &ID);
-					for (stu_tmp == stu_head; stu_tmp == NULL; stu_tmp = stu_tmp->next) {
-						if (ID == stu_tmp->ID) {
-							while (1) {
-								printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
-								scanf("%c", &c);
-								if(c=='y'){
-									printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
-									stu_tmp=stu_tmp->next;
-									stu_deleteNode(stu_head, stu_tmp->next, stu_tmp);
-									grd_deleteNode(grd_head, grd_tmp->next, grd_tmp);
-									free(stu_tmp);
-									free(grd_tmp);
-									return 0;
-								}
-								else if(c=='n'){
-									printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
-									return 0;
-								}
-								else{
-									printf("y랑 n 중에 입력해주세요!\n");
-									continue;
-								}
-							}
-						}
-						else{
-							printf("귀하의 학번 정보가 없습니다!\n");
-						}
-					}
-				}
-			}
-			else { //비밀번호가 틀릴 경우
-				printf("비밀번호가 올바르지 않습니다!\n");
+				printf("등록된 학번이 아닙니다!\n");
+				//free(grd_tmp); ============================================================여기
 				return -1;
 			}
 		}
 
-	}
+		printf("과목 : ");
+		scanf("%s", grd_tmp->classname);
 
-	void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
-		if (prev = NULL) {
-			stu_head = stu_head->next;
+		printf("성적 : ");
+		while (1) {
+			scanf("%d", &(grd_tmp->grade));
+			if (grd_tmp->grade >= 0 && grd_tmp->grade <= 100) {
+				grd_tmp=gradechange(grd_tmp, stu_tmp); //맞나....?
+				break;
+			}
+			else {
+				printf("1~100 사이의 수를 입력해주세요.\n");
+				continue;
+			}
+		}
+
+		printf("학점 : ");
+		while (1) {
+			scanf("%d", &(grd_tmp->credit));
+			if (grd_tmp->credit >= 1 && grd_tmp->credit <= 9) {
+				break;
+			}
+			else { 
+				printf("1~9 사이의 수를 입력해주세요.\n");
+				continue;
+			}
+		}
+		grd_connect(grd_tmp); //성적 연결
+		fwrite(grd_tmp, sizeof(Grade), 1, ifp_g); //파일 입력
+		printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
+		scanf("%d", &num);
+		free(grd_tmp);
+		free(stu_tmp);
+		if (num == 0) {
+			break;
 		}
 		else {
-			prev->next = deleted->next;
-			free(deleted);
+			continue;
 		}
 	}
+	return 0;
+}
 
-	void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev) {
-		if(prev = NULL) {
-			grd_head = grd_head->next;
-		}
-		else {
-			prev->next = deleted->next;
-			free(deleted);
-		}
-	}
+int deleteInfo(){
+	char key[30];
+	int ID = 0;
+	char c;
+	Student* stu_tmp;
+	Grade* grd_tmp;
 
-	Grade* gradechange(Grade* grd_tmp, Student* stu_tmp) { //성적 입력 -> 학점
-		if (grd_tmp->grade >= 97 && grd_tmp->grade <= 100) {
-			strcpy(grd_tmp->GPA, "A+");
-			stu_tmp->total_GPA += 4.5;
+	stu_tmp = (Student*)malloc(sizeof(Student));
+	grd_tmp = (Grade*)malloc(sizeof(Grade));
+
+	printf("관리자 비밀번호 : ");
+	scanf("%s", key);
+	while (1) {
+		if (strcmp(key,masterkey)==0) {
+			while(1){
+				printf("학번: ");
+				scanf("%d", &ID);
+				for (stu_tmp == stu_head; stu_tmp == NULL; stu_tmp = stu_tmp->next) {
+					if (ID == stu_tmp->ID) {
+						while (1) {
+							printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
+							scanf("%c", &c);
+							if(c=='y'){
+								printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
+								stu_tmp=stu_tmp->next;
+								stu_deleteNode(stu_head, stu_tmp->next, stu_tmp);
+								grd_deleteNode(grd_head, grd_tmp->next, grd_tmp);
+								free(stu_tmp);
+								free(grd_tmp);
+								return 0;
+							}
+							else if(c=='n'){
+								printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
+								return 0;
+							}
+							else{
+								printf("y랑 n 중에 입력해주세요!\n");
+								continue;
+							}
+						}
+					}
+					else{
+						printf("귀하의 학번 정보가 없습니다!\n");
+					}
+				}
+			}
 		}
-		else if (grd_tmp->grade <= 94 && grd_tmp->grade >= 96) {
-			strcpy(grd_tmp->GPA, "A0");
-			stu_tmp->total_GPA += 4.3;
+		else { //비밀번호가 틀릴 경우
+			printf("비밀번호가 올바르지 않습니다!\n");
+			return -1;
 		}
-		else if (grd_tmp->grade <= 90 && grd_tmp->grade >= 93) {
-			strcpy(grd_tmp->GPA, "A-");
-			stu_tmp->total_GPA += 4.0;
-		}
-		else if (grd_tmp->grade <= 87 && grd_tmp->grade >= 89) {
-			strcpy(grd_tmp->GPA, "B+");
-			stu_tmp->total_GPA += 3.5;
-		}
-		else if (grd_tmp->grade <= 84 && grd_tmp->grade >= 86) {
-			strcpy(grd_tmp->GPA, "B0");
-			stu_tmp->total_GPA += 3.3;
-		}
-		else if (grd_tmp->grade <= 80 && grd_tmp->grade >= 83) {
-			strcpy(grd_tmp->GPA, "B-");
-			stu_tmp->total_GPA += 3.0;
-		}
-		else if (grd_tmp->grade <= 77 && grd_tmp->grade >= 79) {
-			strcpy(grd_tmp->GPA, "C+");
-			stu_tmp->total_GPA += 2.5;
-		}
-		else if (grd_tmp->grade <= 74 && grd_tmp->grade >= 76) {
-			strcpy(grd_tmp->GPA, "C0");
-			stu_tmp->total_GPA += 2.3;
-		}
-		else if (grd_tmp->grade <= 70 && grd_tmp->grade >= 73) {
-			strcpy(grd_tmp->GPA, "C-");
-			stu_tmp->total_GPA += 2.0;
-		}
-		else if (grd_tmp->grade <= 67 && grd_tmp->grade >= 69) {
-			strcpy(grd_tmp->GPA, "D+");
-			stu_tmp->total_GPA += 1.5;
-		}
-		else if (grd_tmp->grade <= 64 && grd_tmp->grade >= 66) {
-			strcpy(grd_tmp->GPA, "D0");
-			stu_tmp->total_GPA += 1.3;
-		}
-		else if (grd_tmp->grade <= 60 && grd_tmp->grade >= 63) {
-			strcpy(grd_tmp->GPA, "D-");
-			stu_tmp->total_GPA += 1.0;
-		}
-		else {
-			strcpy(grd_tmp->GPA, "F");
-			stu_tmp->total_GPA += 0;
-		}
-		return grd_tmp;
 	}
+}
+
+void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
+	if (prev = NULL) {
+		stu_head = stu_head->next;
+	}
+	else {
+		prev->next = deleted->next;
+		free(deleted);
+	}
+}
+
+void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev) {
+	if(prev = NULL) {
+		grd_head = grd_head->next;
+	}
+	else {
+		prev->next = deleted->next;
+		free(deleted);
+	}
+}
+
+Grade* gradechange(Grade* grd_tmp, Student* stu_tmp) { //성적 입력 -> 학점
+	if (grd_tmp->grade >= 97 && grd_tmp->grade <= 100) {
+		strcpy(grd_tmp->GPA, "A+");
+		stu_tmp->total_GPA += 4.5;
+	}
+	else if (grd_tmp->grade <= 94 && grd_tmp->grade >= 96) {
+		strcpy(grd_tmp->GPA, "A0");
+		stu_tmp->total_GPA += 4.3;
+	}
+	else if (grd_tmp->grade <= 90 && grd_tmp->grade >= 93) {
+		strcpy(grd_tmp->GPA, "A-");
+		stu_tmp->total_GPA += 4.0;
+	}
+	else if (grd_tmp->grade <= 87 && grd_tmp->grade >= 89) {
+		strcpy(grd_tmp->GPA, "B+");
+		stu_tmp->total_GPA += 3.5;
+	}
+	else if (grd_tmp->grade <= 84 && grd_tmp->grade >= 86) {
+		strcpy(grd_tmp->GPA, "B0");
+		stu_tmp->total_GPA += 3.3;
+	}
+	else if (grd_tmp->grade <= 80 && grd_tmp->grade >= 83) {
+		strcpy(grd_tmp->GPA, "B-");
+		stu_tmp->total_GPA += 3.0;
+	}
+	else if (grd_tmp->grade <= 77 && grd_tmp->grade >= 79) {
+		strcpy(grd_tmp->GPA, "C+");
+		stu_tmp->total_GPA += 2.5;
+	}
+	else if (grd_tmp->grade <= 74 && grd_tmp->grade >= 76) {
+		strcpy(grd_tmp->GPA, "C0");
+		stu_tmp->total_GPA += 2.3;
+	}
+	else if (grd_tmp->grade <= 70 && grd_tmp->grade >= 73) {
+		strcpy(grd_tmp->GPA, "C-");
+		stu_tmp->total_GPA += 2.0;
+	}
+	else if (grd_tmp->grade <= 67 && grd_tmp->grade >= 69) {
+		strcpy(grd_tmp->GPA, "D+");
+		stu_tmp->total_GPA += 1.5;
+	}
+	else if (grd_tmp->grade <= 64 && grd_tmp->grade >= 66) {
+		strcpy(grd_tmp->GPA, "D0");
+		stu_tmp->total_GPA += 1.3;
+	}
+	else if (grd_tmp->grade <= 60 && grd_tmp->grade >= 63) {
+		strcpy(grd_tmp->GPA, "D-");
+		stu_tmp->total_GPA += 1.0;
+	}
+	else {
+		strcpy(grd_tmp->GPA, "F");
+		stu_tmp->total_GPA += 0;
+	}
+	return grd_tmp;
+}
 
