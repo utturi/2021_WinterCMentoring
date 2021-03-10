@@ -2,6 +2,7 @@
 #include<string.h>
 #include<stdlib.h>
 
+
 /*추가
 <만들어야 할 것>
 grrade float형,char형으로 변환하는 함수 각각
@@ -13,12 +14,12 @@ grrade float형,char형으로 변환하는 함수 각각
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
 typedef struct subject_grade{
 	char * subject;
-	int grade[];//grade[0]은 2자리 점수, grade[1]은 10*학점을 int형으로 변환한 것, grade[2]~'\0'까지는 등급의 아스키 코드값을 담게 할 것
+	int grade[5]={0,};//grade[0]은 2자리 성적, grade[1]은 10*평점, grade[2]~'\0'까지는 등급의 아스키 코드값을 담게 할 것
 	int complete;
 	struct subject_grade *next;
 }subject;
 
-//학생의 정보(학번, 이름, 비밀번호, 과목head주소)를 담고 있는 구조체
+//학생의 정보(학번, 이름, 비밀번호, 과목head주소-subhead)를 담고 있는 구조체
 typedef struct all_node{
 	int student_id;
 	char * name;
@@ -44,8 +45,6 @@ int menu(void){
 }
 
 // 1.성적확인
-//인자로 받은 성적-아직 어떤 형을 받을지는 결정 못함...을 판별하여 등급을 반환하는 함수
-char* char_grade(double score);
 
 void show_grades(student * cur){
 	//바로바로 업데이트된 정보를 확인해야 하기 때문에 여기에도 파일포인터를 이용해야함. 연결리스트만으로 하면 한계가 있음.
@@ -53,22 +52,23 @@ void show_grades(student * cur){
 	student * cur = (student *)malloc(sizeof(studnet));
 	subject * scur = (subject *)malloc(sizeof(subject));
 	scur = cur -> subject;
-	int num = 0,sum_complete = 0;
-	double sum_grades;
+	int num = 0,sum_complete = 0;//num: 과목개수, sum_complete: 이수학점의 합
+	double sum_grades;//sum_grade: 평점 평균구하기 위한 평점*학점의 합
 	printf("<%s>님의 성적\n", cur->name);
 	while(scur != NULL){
-		printf("%s: %s\n", scur->subject, char_grade(scur->score));
+		printf("%s: %s\n", scur->subject, char_grade(scur->grade[2]));
 		sum_complete += scur->complete;
+		sum_grade += (scur->grade[1]/10)*(scur->complete);
 		scur = scur->next;
 		num++;
-		//평점 평균 고민해볼 것
 	}
-	printf("이수학점: %d", sum_grade);
-	printf("평점평균: %.f\n", (/num));
-	//전체석차도 나중에 구현
+	printf("이수학점: %d", sum_complete;
+	printf("평점평균: %.f\n", (sum_grade/sum_complete));
+	//전체석차 나중에 구현
 	return ;
 }
 
+//성적 확인함수
 void check_grades(student * head){
     int stu_id, check=1;
     char * pw; 
@@ -96,17 +96,49 @@ void check_grades(student * head){
 }
 
 //2. 성적 입력
+
+//인자로 받은 성적-아직 어떤 형을 받을지는 결정 못함...을 판별하여 등급을 반환하는 함수
+void array_grade(int grade[]){
+	if(grade/10>=9){
+		grade[1]+=40; grade[2]+='A';
+	}
+	else if(grade/10==8){
+		grade[1]+=30; grade[2]+='B';
+	}
+	else if(grade/10==7){
+		grade[1]+=20; grade[2]+='C';
+	}
+	else if(grade/10==6){
+		grade[1]+=10; grade[2]+='D';
+	}
+	else{
+		grade[2]+='F';
+	}
+	if(grade!=0){
+		if(grade%10>=7){
+			grade[1]+=5; grade[3]+='+';
+		}
+		else if(grade%10>=4){
+			grade[1]+=3; grade[3]+='0';
+		}
+		else
+			grade[3]+='-';
+	}
+	return;
+}
+
 void add_subect(subject * cur){
 	subject * cur = (subject *)malloc(sizeof(subject));
 	subject * tmp = (subject *)malloc(sizeof(subject));
 	printf("과목: ");
 	scanf("%s",tmp->subject);
 	printf("성적: ");
-	scanf("%2d", &tmp->score);
+	scanf("%2d", tmp->grade);
 	printf("(이수)학점 : ");
 	printf("%1d", &tmp->complete);
 	cur -> next=tmp;
 	tmp -> next = NULL;
+	//성적에 따라 변환해주는 함수 추가할 것!
 	//Grade.txt파일에 입력하는 것 추가할 것!
 	return;
 }
