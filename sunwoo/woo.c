@@ -142,6 +142,7 @@ void inputgrade()
             scur = scur->next;
         }
         if(a==0){
+            printf("등록된 학번이 아닙니다!\n");
             return;
         }
         printf("과목 : ");
