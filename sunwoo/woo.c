@@ -14,7 +14,7 @@ typedef struct grade{
     char class[20];
     int grade;
     int abcf;
-    //int sum;
+    int sum;
     struct grade *next;
 } Grade;
 
