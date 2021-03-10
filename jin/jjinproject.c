@@ -5,7 +5,6 @@
 
 /*추가
 <만들어야 할 것>
-grrade float형,char형으로 변환하는 함수 각각
 전체 석차를 위해 정렬하는 함수
 헤드를 받아 null까지 free하는 함수
 파일 입출력 
@@ -58,12 +57,12 @@ void show_grades(student * cur){
 	while(scur != NULL){
 		printf("%s: %s\n", scur->subject, char_grade(scur->grade[2]));
 		sum_complete += scur->complete;
-		sum_grade += (scur->grade[1]/10)*(scur->complete);
+		sum_grade += (double)((scur->grade[1]/10))*(scur->complete);
 		scur = scur->next;
 		num++;
 	}
 	printf("이수학점: %d", sum_complete;
-	printf("평점평균: %.f\n", (sum_grade/sum_complete));
+	printf("평점평균: %.f\n", (sum_grade/(double)sum_complete));
 	//전체석차 나중에 구현
 	return ;
 }
@@ -96,9 +95,7 @@ void check_grades(student * head){
 }
 
 //2. 성적 입력
-
-//인자로 받은 성적-아직 어떤 형을 받을지는 결정 못함...을 판별하여 등급을 반환하는 함수
-void array_grade(int grade[]){
+void grade_array(int grade[]){
 	if(grade/10>=9){
 		grade[1]+=40; grade[2]+='A';
 	}
@@ -134,11 +131,11 @@ void add_subect(subject * cur){
 	scanf("%s",tmp->subject);
 	printf("성적: ");
 	scanf("%2d", tmp->grade);
+	array_grade(tmp->grade);
 	printf("(이수)학점 : ");
-	printf("%1d", &tmp->complete);
+	scanf("%1d", &tmp->complete);
 	cur -> next=tmp;
 	tmp -> next = NULL;
-	//성적에 따라 변환해주는 함수 추가할 것!
 	//Grade.txt파일에 입력하는 것 추가할 것!
 	return;
 }
