@@ -2,26 +2,32 @@
 #include<string.h>
 #include<stdlib.h>
 
-/*
-1. 이대로 all_node에 묶는 방법
-2. student 리스트 / grade 리스트를 만들은 다음 따로따로 사용하는 방법
+/*추가
+<만들어야 할 것>
+grrade float형,char형으로 변환하는 함수 각각
+전체 석차를 위해 정렬하는 함수
+헤드를 받아 null까지 free하는 함수
+파일 입출력 
 */
 
+//과목의 정보(이름,점수, 학점)를 담고 있는 구조체
 typedef struct subject_grade{
 	char * subject;
-	int score;
+	int grade[];//grade[0]은 2자리 점수, grade[1]은 10*학점을 int형으로 변환한 것, grade[2]~'\0'까지는 등급의 아스키 코드값을 담게 할 것
 	int complete;
 	struct subject_grade *next;
 }subject;
 
+//학생의 정보(학번, 이름, 비밀번호, 과목head주소)를 담고 있는 구조체
 typedef struct all_node{
 	int student_id;
 	char * name;
 	char * password;
-	subject * subhead;
-	struct all_node *next;
+	subject * subhead; //과목구조체의 head를 가리키게 하여 순환을 시작하는 역할
+	struct all_node *next;//다음 학생과 연결해주는 역할
 }student;
 
+//메뉴 출력해주는 함수
 int menu(void){
 	int num;
 	do{
@@ -36,10 +42,10 @@ int menu(void){
 	}while(num<0||num>4);
 	return num;
 }
-등록
 
 // 1.성적확인
-char_grade();
+//인자로 받은 성적-아직 어떤 형을 받을지는 결정 못함...을 판별하여 등급을 반환하는 함수
+char* char_grade(double score);
 
 void show_grades(student * cur){
 	//바로바로 업데이트된 정보를 확인해야 하기 때문에 여기에도 파일포인터를 이용해야함. 연결리스트만으로 하면 한계가 있음.
@@ -57,7 +63,7 @@ void show_grades(student * cur){
 		num++;
 		//평점 평균 고민해볼 것
 	}
-	printf("(이수)학점: %d", sum_grade);
+	printf("이수학점: %d", sum_grade);
 	printf("평점평균: %.f\n", (/num));
 	//전체석차도 나중에 구현
 	return ;
@@ -159,7 +165,7 @@ void delete_student(student * head){
 	student * cur = (student *)malloc(sizeof(student));
 	student * prev;
 	cur = head->next;
-	char * admin_pwd = "admin1234";//관리자 비밀
+	char * admin_pwd = "admin1234";//관리자 비밀번호
 	char * check_admin;
 	char * tmp_name;
 	char yorn;
@@ -230,5 +236,6 @@ int main(void){
 		if(num ==0)
 			break;
 	}
+	//free함수 추가할 것 subject도 차례차례 free하는 과정이 필요함.
 	return 0;
 }
