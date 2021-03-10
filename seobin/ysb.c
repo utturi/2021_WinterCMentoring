@@ -4,8 +4,9 @@
 //3. 성적입력에서 Grade 파일 업데이트 시 학번 기준으로 정렬 저장하는거
 //4. 연결리스트 됐는지 확인
 //5. 평점 평균
-//+학번 없을 경우 에러나는 거 고치기
-// 
+// 성적 입력받아서 연결하기
+// 성적 조회 부분 수정
+// 삭제도 해오기
 
 #pragma warning(disable:4996)
 #include <stdio.h>
@@ -135,7 +136,7 @@ int gradecheck() { //1. 성적확인
 				if (strcmp(password, stu_tmp->password)==0) { //비밀번호가 맞을 경우
 					printf("<%s>님의 성적\n", stu_tmp->name);
 					//	for(grd_tmp==grd_head; grd_tmp!=NULL; grd_tmp=grd_tmp->next){
-					while (grd_tmp->next != NULL) {
+					while (grd_tmp != NULL) {
 						if(grd_tmp->ID==stu_tmp->ID){
 							printf("%s : %s\n", grd_tmp->classname, grd_tmp->GPA);
 							stu_tmp->total_credit += grd_tmp->credit;
@@ -164,9 +165,9 @@ int gradecheck() { //1. 성적확인
 	int gradeinput(FILE* ifp_g) { //2. 성적입력
 		int  num = 0;
 		Student* curr;
-		curr = stu_head;
 
 		while (1) {
+			curr = stu_head;
 			Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
 			Student* stu_tmp = (Student*)malloc(sizeof(Student));
 
