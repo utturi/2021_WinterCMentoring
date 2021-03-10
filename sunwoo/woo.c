@@ -190,24 +190,29 @@ void delete()
     int s=0;
     char yorn;
     Student *curs = shead;
-    //int a = 1234;
+
     printf("관리자 비밀번호 : ");
     scanf("%d", &p);
     if(p != 1234){
+        printf("비밀번호가 일치하지 않습니다!\n");
         return;
     }
-    printf("학번 : ");
-    scanf("%d", &c);
-    while(curs != NULL){
-        if(c == curs->code){
-            s++;
-            break;
+    while(s == 0){
+        printf("학번 : ");
+        scanf("%d", &c);
+        while(curs != NULL){
+            if(c == curs->code){
+                s++;
+                break;
+            }
+            curs = curs->next;
         }
-        curs = curs->next;
+        if(s != 1){
+            printf("귀하의 학번정보가 없습니다!\n");
+            curs = shead;
+        }
     }
-    if(s != 1){
-        return;
-    }
+    
     printf("<%s>님의 정보를 삭제하시겠습니까? <y or n> ", curs->name);
     myflush();
     scanf("%c", &yorn);
