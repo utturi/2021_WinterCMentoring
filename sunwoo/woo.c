@@ -119,12 +119,13 @@ void checkgrade()
 void inputgrade()
 {
     int n=1;
-    int a=0;
+
     Student *scur = shead;
     Grade *newNode = (Grade *)malloc(sizeof(Grade));
     newNode->next = NULL;
 
     while(n == 1){
+        int a=0;
         if(ghead == NULL){
             ghead = newNode;
         }
