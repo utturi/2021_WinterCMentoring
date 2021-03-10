@@ -6,7 +6,8 @@
 /*추가
 <만들어야 할 것>
 전체 석차를 위해 정렬하는 함수
-헤드를 받아 null까지 free하는 함수
+헤드를 받아 null까지 free하는 함수-문제: 자료형이 다다름->함수 취소
+질문: student안의 subject도 차례차례 free하는 과정이 필요한가요?
 파일 입출력 
 */
 
@@ -26,6 +27,8 @@ typedef struct all_node{
 	subject * subhead; //과목구조체의 head를 가리키게 하여 순환을 시작하는 역할
 	struct all_node *next;//다음 학생과 연결해주는 역할
 }student;
+
+
 
 //메뉴 출력해주는 함수
 int menu(void){
@@ -265,6 +268,13 @@ int main(void){
 		if(num ==0)
 			break;
 	}
-	//free함수 추가할 것 subject도 차례차례 free하는 과정이 필요함.
+	student *fcur = (student*)malloc(sizeof(student));
+	student *fpev = (student*)malloc(sizeof(student));
+	fcur = head->next;
+	while(fcur!=NULL){
+		fprev->next = fcur ->next;
+		free(fcur);
+		fcur = fprev;
+	}
 	return 0;
 }
