@@ -112,6 +112,8 @@ void registerInfo(FILE* ifp_s) { //3. 학생정보등록
 int gradecheck() { //1. 성적확인
 	Grade* grd_tmp;
 	Student* stu_tmp;
+	grd_tmp=(Grade*)malloc(sizeof(grd_tmp));
+	stu_tmp=(Student*)malloc(sizeof(stu_tmp));
 	int total_credit = 0, total_grade=0, rank=1, cnt=0;
 	int ID = 0;
 	char password[30];
@@ -120,8 +122,7 @@ int gradecheck() { //1. 성적확인
 	scanf("%d", &ID);
 
 	for (stu_tmp = stu_head; stu_tmp != NULL; stu_tmp = stu_tmp->next) {
-		if (stu_tmp->ID==ID) {//없는 학번일 경우  
-			// 어 ... 근데 이렇게 하면 아닐 때마다 계속 귀하의 ㅎㄱ번 정보 없다고 뜨지 않나
+		if (stu_tmp->ID!=ID) {//없는 학번일 경우  
 			printf("귀하의 학번 정보가 없습니다!\n");
 			return -1;
 		}
@@ -129,16 +130,19 @@ int gradecheck() { //1. 성적확인
 			while (1) {
 				printf("비밀번호 : ");
 				scanf("%s", password);
-				if (password==stu_tmp->password) { //비밀번호가 맞을 경우
+				if (strcmp(password, stu_tmp->password)==0) { //비밀번호가 맞을 경우
 					printf("<%s>님의 성적\n", stu_tmp->name);
-					while (stu_tmp != NULL) {
-						printf("%s : %s\n", grd_tmp->classname, grd_tmp->GPA);
-						stu_tmp->total_credit += grd_tmp->credit;
-						stu_tmp->average += grd_tmp->grade;
-						cnt++;
-						// fseek으로 이동하는 코드
-						// 전체석차 코드
-					}
+				//	for(grd_tmp==grd_head; grd_tmp!=NULL; grd_tmp=grd_tmp->next){
+						while (grd_tmp->next != NULL) {
+							printf("%s : %s\n", grd_tmp->classname, grd_tmp->GPA);
+							stu_tmp->total_credit += grd_tmp->credit;
+							stu_tmp->average += grd_tmp->grade;
+							cnt++;
+							grd_tmp=grd_tmp->next;
+							// fseek으로 이동하는 코드
+							// 전체석차 코드
+						}
+				//	}
 					stu_tmp->average = (stu_tmp->average) / cnt;
 
 					printf("\n이수학점 : %d\n", stu_tmp->total_credit);
