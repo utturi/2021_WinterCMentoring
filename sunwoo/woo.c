@@ -24,6 +24,7 @@ void checkgrade();
 void inputgrade();
 void inputstudent();
 void delete();
+void myflush();
 int main()
 {
     int n;
@@ -185,6 +186,44 @@ void inputstudent()
 }
 void delete()
 {
+    int p, c;
+    int s=0;
+    char yorn;
+    Student *curs = shead;
+    //int a = 1234;
+    printf("관리자 비밀번호 : ");
+    scanf("%d", &p);
+    if(p != 1234){
+        return;
+    }
+    printf("학번 : ");
+    scanf("%d", &c);
+    while(curs != NULL){
+        if(c == curs->code){
+            s++;
+            break;
+        }
+        curs = curs->next;
+    }
+    if(s != 1){
+        return;
+    }
+    printf("<%s>님의 정보를 삭제하시겠습니까? <y or n> ", curs->name);
+    myflush();
+    scanf("%c", &yorn);
+
+    if(yorn == 'y'){
+
+
+        //삭제코드
+        printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
+    }
 
     return;
+}
+void myflush()
+{
+    while(getchar() != '\n'){
+        ;
+    }
 }
