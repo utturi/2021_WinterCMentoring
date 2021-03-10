@@ -157,7 +157,7 @@ void inputstudent()
     else{
         stail->next = newNode;
     }
-    //stail = newNode;
+    stail = newNode;
 
     printf("학생이름 : ");
     scanf("%s", newNode->name);
