@@ -98,26 +98,26 @@ void check_grades(student * head){
 
 //2. 성적 입력
 void grade_array(int grade[]){
-	if(grade/10>=9){
+	if(grade[0]/10>=9){
 		grade[1]+=40; grade[2]+='A';
 	}
-	else if(grade/10==8){
+	else if(grade[0]/10==8){
 		grade[1]+=30; grade[2]+='B';
 	}
-	else if(grade/10==7){
+	else if(grade[0]/10==7){
 		grade[1]+=20; grade[2]+='C';
 	}
-	else if(grade/10==6){
+	else if(grade[0]/10==6){
 		grade[1]+=10; grade[2]+='D';
 	}
 	else{
 		grade[2]+='F';
 	}
-	if(grade!=0){
-		if(grade%10>=7){
+	if(grade[1]!=0){
+		if(grade[0]%10>=7){
 			grade[1]+=5; grade[3]+='+';
 		}
-		else if(grade%10>=4){
+		else if(grade[0]%10>=4){
 			grade[1]+=3; grade[3]+='0';
 		}
 		else
