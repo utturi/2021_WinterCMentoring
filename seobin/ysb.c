@@ -5,7 +5,7 @@
 //4. 연결리스트 됐는지 확인
 //5. 평점 평균
 //+학번 없을 경우 에러나는 거 고치기
-//
+// 
 
 #pragma warning(disable:4996)
 #include <stdio.h>
@@ -63,7 +63,7 @@ int main(void) {
 	grd_tail = NULL;
 
 	while (1) {
-		printf("\n[ Menu ]\n1. 성적확인\t2. 성적입력\t3. 학생정보등록\t4. 학생정보삭제\t0. 프로그램 종료\n");
+		printf("\n[ Menu ]\n1. 성적확인\t2. 성적입력\t3. 학생정보등록\t\t4. 학생정보삭제\t\t0. 프로그램 종료\n");
 		scanf("%d", &res);
 		switch (res) {
 		case 0: //0. 프로그램 종료
@@ -159,19 +159,27 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 	int  num = 0;
 	Student* curr;
 	curr = stu_head;
-	Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
-	Student* stu_tmp = (Student*)malloc(sizeof(Student));
 
 	while (1) {
+		Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
+		Student* stu_tmp = (Student*)malloc(sizeof(Student));
+		
 		printf("학번 : ");
 		scanf("%d", &(grd_tmp->ID));
-		for (curr = stu_head; curr != NULL; curr = curr->next) {
+		
+		if(curr==NULL){
+			printf("등록된 학번이 아닙니다!\n");
+			free(grd_tmp);
+			break;
+		}
+		
+		for (curr = stu_head; curr != NULL; curr = curr->next) { 
 			if (curr->ID == grd_tmp->ID) {
 				break;
 			}
 			else {
 				printf("등록된 학번이 아닙니다!\n");
-				free(grd_tmp);
+				//free(grd_tmp); ============================================================여기
 				return -1;
 			}
 		}
