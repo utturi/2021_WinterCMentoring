@@ -13,7 +13,7 @@
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
 typedef struct subject_grade{
 	char * subject;
-	int grade[5]={0,};//grade[0]은 2자리 성적, grade[1]은 10*평점, grade[2]~'\0'까지는 등급의 아스키 코드값을 담게 할 것
+	int grade[5]={0,};//grade[0]은 2자리 성적, grade[1]은 10*평점, grade[2],grade[3]은 등급의 아스키 코드값을 담게 할 것
 	int complete;
 	struct subject_grade *next;
 }subject;
@@ -57,7 +57,7 @@ void show_grades(student * cur){
 	double sum_grades;//sum_grade: 평점 평균구하기 위한 평점*학점의 합
 	printf("<%s>님의 성적\n", cur->name);
 	while(scur != NULL){
-		printf("%s: %s\n", scur->subject, char_grade(scur->grade[2]));
+		printf("%s: %c%c\n", scur->subject, scur->grade[2], scur->grade[3]);
 		sum_complete += scur->complete;
 		sum_grade += (double)((scur->grade[1]/10))*(scur->complete);
 		scur = scur->next;
