@@ -21,7 +21,7 @@ node *headg;
 int menu();
 /*
    void confirm_grade(){
-   stnode *list=(stnode *)malloc(sizeof(stnode));
+   stnode *=(stnode *)malloc(sizeof(stnode));
    head-=list;
    stnode *cur;
    cur->next=list;
@@ -61,66 +61,66 @@ int menu();
    }
  */
 void add_grade(){
-    stnode *curs;
-    curs=heads;
-
-    node *glist=(node *)malloc(sizeof(node));
-    node *curg;
-    glist->next=NULL;
-
-    printf("학번 : ");
-    scanf("%d",&glist->stnum);
-
-    if (curs==NULL){
-        free(glist);
-        printf("등록된 학번이 아닙니다!");
-        menu();
-    }
-
     while(1){
-        if (curs->stnum==glist->stnum)
-            break;
-        else if (curs==NULL){
+        stnode *curs;
+        curs=heads;
+
+        node *glist=(node *)malloc(sizeof(node));
+        node *curg;
+        glist->next=NULL;
+
+        printf("학번 : ");
+        scanf("%d",&glist->stnum);
+
+        if (curs==NULL){
             free(glist);
-            printf("등록된 학번이 아닙니다!\n");
+            printf("등록된 학번이 아닙니다!");
             menu();
         }
-        curs=curs->next;
-    }
 
-    printf("과목 : ");
-    scanf("%s",glist->subject);
-    printf("성적 : ");
-    scanf("%d",&glist->grade);
-    printf("학점 : ");
-    scanf("%d",&glist->credit);
-
-    if (headg==NULL)
-        headg=glist;
-    else{
-        curg=headg;
-        while(curg->next!=NULL){
-            curg=curg->next;
+        while(1){
+            if (curs->stnum==glist->stnum)
+                break;
+            else {
+                free(glist);
+                printf("등록된 학번이 아닙니다!\n");
+                menu();
+            }
+            curs=curs->next;
         }
-        curg->next=glist;
-    }
 
-    // FILE *fp=fopen("Grade.txt","w");
-    // fprintf("학번 : %d 과목 :  %s 성적 : %d 학점 :  %d",&list->stnum,list->subject,&list->grade,&list->credit);
-    // fclose(fp);
-    printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : <1 or 0 입력>\n");
-    int a;
-    scanf("%d",&a);
-    switch (a){
-        case 1:
-            add_grade();
-            break;
-        case 0:
+        printf("과목 : ");
+        scanf("%s",glist->subject);
+        printf("성적 : ");
+        scanf("%d",&glist->grade);
+        printf("학점 : ");
+        scanf("%d",&glist->credit);
+
+        if (headg==NULL)
+            headg=glist;
+        else{
+            curg=headg;
+            while(curg->next!=NULL){
+                curg=curg->next;
+            }
+            curg->next=glist;
+        }
+
+        // FILE *fp=fopen("Grade.txt","w");
+        // fprintf("학번 : %d 과목 :  %s 성적 : %d 학점 :  %d",&list->stnum,list->subject,&list->grade,&list->credit);
+        // fclose(fp);
+
+        printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : <1 or 0 입력>\n");
+        int a;
+        scanf("%d",&a);
+        if(a==1)
+            continue;
+        else
             printf("성적입력 종료\n");
-            menu();
-            break;
+        break;
     }
 }
+
 
 void add_student(){
     stnode *list=(stnode *)malloc(sizeof(stnode));
@@ -149,15 +149,15 @@ void add_student(){
         // fwrite(&list,sizeof(list ),1 , fp);
         // fclose(fp);
     }
-    menu();
 }
-    /*
-       void delete_student(){
+/*
+   void delete_student(){
 
-       }
-     */
+   }
+ */
 
-    int menu (){
+int menu (){
+    while (1){
         printf("[Menu]\n1. 성적확인 2. 성적입력 3. 학생정보등록 4. 학생정보삭제 0. 프로그램 종료\n");
         int a;
         scanf("%d",&a);
@@ -176,11 +176,12 @@ void add_student(){
                 return 0;
         }
     }
+}
 
-    int main()
-    {
-        heads=NULL;
-        headg=NULL; 
-        menu();
-        return 0;
-    }
+int main()
+{
+    heads=NULL;
+    headg=NULL; 
+    menu();
+    return 0;
+}
