@@ -29,6 +29,44 @@ typedef struct all_node{
 student *head;
 
 
+int menu(void);
+void show_grades(student * cur);
+void check_grades(void);
+void grade_array(int grade[]);
+void add_subect(subject*);
+void input_grades(student *, student *);
+void input_student(void);
+void delete_student(void);
+void change_page(int);
+
+//main함수
+int main(void){
+	// 파일에서 연결리스트로 불러오는 함수 추가할 것
+	head = NULL;
+	while(1){
+		int num = menu();
+		change_page(num);
+		if(num ==0)
+			break;
+	}
+	/*
+	   student *cur =(student*)malloc(sizeof(student));
+	   cur = head->next;
+	   while(cur!=NULL){
+	   printf("%d\n", cur->student_id);
+	   }
+
+	   student *fcur = (student*)malloc(sizeof(student));
+	   student *fprev = (student*)malloc(sizeof(student));
+	   fcur = head->next;
+	   while(fcur!=NULL){
+	   fprev->next = fcur ->next;
+	   free(fcur);
+	   fcur = fprev;
+	   }*/
+	return 0;
+}
+
 //메뉴 출력해주는 함수
 int menu(void){
 	int num;
@@ -44,6 +82,32 @@ int menu(void){
 	}while(num<0||num>4);
 	return num;
 }
+//메뉴별로 전환하는 함수 - switch문
+void change_page(int num){
+	switch(num){
+		/*
+		   case 1:
+		   check_grades();//성적확인
+		   break;
+		 */
+		case 2:
+			input_grades();//성적입력
+			break;
+
+		case 3:
+			input_student();//학생정보등록
+			break;
+		case 4:
+			//delete_student();//학생정보삭제
+			break;
+		case 0:
+			printf("프로그램을 종료합니다.\n");
+			return;
+	}
+	return;
+}
+
+
 /*
 // 1.성적확인
 
@@ -96,7 +160,65 @@ printf("귀하의 학번 정보가 없습니다!\n");
 return;
 }
  */
+
 //2. 성적 입력
+void input_grades(){
+	/*subject *sub_head;
+		sub_head-> next = NULL;
+		subject * cur;*/
+	student * cur = (student*)malloc(sizeof(student));
+	student * tmp = (student*)malloc(sizeof(student));
+	int contnum=1;
+	int id;
+	if(head=NULL){
+		printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
+		return;
+	}
+	printf("학번: ");
+	scanf("%d", &id);
+	cur = head;//여기서cur은 all_node의 cur
+	while(cur!=NULL){
+		cur=cur->next;
+		if(cur->student_id==id)
+			break;
+	}
+	if(cur==NULL){
+		printf("입력하신 학번의 학생정보가 존재하지 않습니다\n");
+		return;
+	}
+//성적 추가하는 것 tmp를 반환해서 추가할 것인지 이대로 add_subject에서 추가할 것인지 결정해야 함
+		
+	while(contnum){
+		if()
+		add_subject(cur);
+		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
+		scanf("%d", &contnum);
+		if(contnum == 1){
+			cur = cur->next;
+		}
+		break;
+	}
+	tmp->subhead = sub_head;
+	//파일 입력 추가
+	return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
+};
+
+void add_subect(subject * cur){
+	subject * cur = (subject *)malloc(sizeof(subject));
+	subject * tmp = (subject *)malloc(sizeof(subject));
+	printf("과목: ");
+	scanf("%s",tmp->subject);
+	printf("성적: ");
+	scanf("%2d", tmp->grade);
+	array_grade(tmp->grade);
+	printf("(이수)학점 : ");
+	scanf("%1d", &tmp->complete);
+	cur -> next=tmp;
+	tmp -> next = NULL;
+	//Grade.txt파일에 입력하는 것 추가할 것!
+	return;
+}
+
 void grade_array(int grade[]){
 	if(grade[0]/10>=9){
 		grade[1]+=40; grade[2]+='A';
@@ -125,47 +247,6 @@ void grade_array(int grade[]){
 	}
 	return;
 }
-
-void add_subect(subject * cur){
-	subject * cur = (subject *)malloc(sizeof(subject));
-	subject * tmp = (subject *)malloc(sizeof(subject));
-	printf("과목: ");
-	scanf("%s",tmp->subject);
-	printf("성적: ");
-	scanf("%2d", tmp->grade);
-	array_grade(tmp->grade);
-	printf("(이수)학점 : ");
-	scanf("%1d", &tmp->complete);
-	cur -> next=tmp;
-	tmp -> next = NULL;
-	//Grade.txt파일에 입력하는 것 추가할 것!
-	return;
-}
-
-//여기서 노드 포인터를 받아서 학번 순 자리에 넣을 것인지 아니면 이 함수에서 바로 넣어줄 것인지 결정해야 함....
-void add_stu(student * prev, student * cur){
-	subject *sub_head = (subject*)malloc(sizeof(subject));
-	sub_head-> next = NULL;
-	subject * cur;
-	cur = head;
-	student * tmp = (student*)malloc(sizeof(student));
-	int contnum=1;
-	printf("학번: ");
-	scanf("%d", &tmp->student_id);
-	while(contnum){
-		add_subject(cur);
-		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
-		scanf("%d", &contnum);
-		if(contnum == 1){
-			cur = cur->next;
-		}
-		break;
-	}
-	tmp->subhead = sub_head;
-	//파일 입력 추가
-	return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
-};
-
 
 
 //3. 학생정보등록
@@ -201,102 +282,50 @@ void input_student(void){
 /*
 //4. 학생정보삭제
 void delete_student(void){
-	student * cur = (student *)malloc(sizeof(student));
-	student * prev;
-	char * admin_pwd = "admin1234";//관리자 비밀번호
-	char * check_admin;
-	char * tmp_name;
-	char yorn;
-	int del_stu_id;
-	if(head!=NULL){
-		cur = head->next;
-		printf("관리자 비밀번호: ");
-		scanf("%s", check_admin);
-		if(strcmp(admin_pwd, check_admin)==0){
-			while(1){
-				printf("학번: ");
-				scanf("%d", &del_stu_id);
-				while(cur!= NULL){
-					if(cur->student_id== del_stu_id){
-						printf("<%s>님의 정보를 삭제하시겠습니까?<y or n>\n", cur->name);
-						scanf("%c", &yorn);
-						if(yorn == 'y' || yorn =='Y'){
-							strcpy(tmp_name, cur->name);
-							prev->next = cur->next;
-							free(cur);
-							printf("<%s>님의 정보를 삭제했습니다.", tmp_name);
-						}
-						else
-							printf("<%s>님의 정보를 삭제하지 않았습니다.", cur->name);
-						return;
-					}
-					prev = cur;
-					cur = cur->next;
-				}
-				if(cur==NULL)
-					printf("귀하의 학번 정보가 올바르지 않습니다!\n");
-			}
-		}
-		printf("비밀번호가 올바르지 않습니다!\n");
-		return;
-	}
-	printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
-	return ;
+student * cur = (student *)malloc(sizeof(student));
+student * prev;
+char * admin_pwd = "admin1234";//관리자 비밀번호
+char * check_admin;
+char * tmp_name;
+char yorn;
+int del_stu_id;
+if(head!=NULL){
+cur = head->next;
+printf("관리자 비밀번호: ");
+scanf("%s", check_admin);
+if(strcmp(admin_pwd, check_admin)==0){
+while(1){
+printf("학번: ");
+scanf("%d", &del_stu_id);
+while(cur!= NULL){
+if(cur->student_id== del_stu_id){
+printf("<%s>님의 정보를 삭제하시겠습니까?<y or n>\n", cur->name);
+scanf("%c", &yorn);
+if(yorn == 'y' || yorn =='Y'){
+strcpy(tmp_name, cur->name);
+prev->next = cur->next;
+free(cur);
+printf("<%s>님의 정보를 삭제했습니다.", tmp_name);
+}
+else
+printf("<%s>님의 정보를 삭제하지 않았습니다.", cur->name);
+return;
+}
+prev = cur;
+cur = cur->next;
+}
+if(cur==NULL)
+printf("귀하의 학번 정보가 올바르지 않습니다!\n");
+}
+}
+printf("비밀번호가 올바르지 않습니다!\n");
+return;
+}
+printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
+return ;
 }
 //FILE *fp = fopen("Student.txt", "w");
 //FILE *fp = fopent("Grade.txt", "w");
 //: 새로파일 다시 쓰게 해서 파일 초기화 해줄 것...
-*/
+ */
 
-//메뉴별로 전환하는 함수 - switch문
-void change_page(int num){
-	switch(num){
-		/*
-		case 1:
-		  check_grades();
-		  break;
-		 */
-		case 2:
-			input_grades();
-			break;
-		
-		case 3:
-			input_student();
-			break;
-		case 4:
-			//delete_student();
-			break;
-		case 0:
-			printf("프로그램을 종료합니다.\n");
-			return;
-	}
-	return;
-}
-
-//main함수
-int main(void){
-	// 파일에서 연결리스트로 불러오는 함수 추가할 것
-	head = NULL;
-	while(1){
-		int num = menu();
-		change_page(num);
-		if(num ==0)
-			break;
-	}
-	/*
-	   student *cur =(student*)malloc(sizeof(student));
-	   cur = head->next;
-	   while(cur!=NULL){
-	   printf("%d\n", cur->student_id);
-	   }
-
-	   student *fcur = (student*)malloc(sizeof(student));
-	   student *fprev = (student*)malloc(sizeof(student));
-	   fcur = head->next;
-	   while(fcur!=NULL){
-	   fprev->next = fcur ->next;
-	   free(fcur);
-	   fcur = fprev;
-	   }*/
-	return 0;
-}
