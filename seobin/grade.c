@@ -204,7 +204,8 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 
 		printf("학번 : ");
 		scanf("%d", &(grd_tmp->ID));
-	
+		myflush();
+
 		if(stu_curr==NULL){
 			printf("등록된 학번이 아닙니다!\n");
 			myflush();
@@ -218,7 +219,6 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 			}
 			else{
 				printf("등록된 학번이 아닙니다!\n");
-				myflush();
 				//free(grd_tmp); ============================================================여기
 				return -1;
 			}
@@ -226,17 +226,20 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 
 		printf("과목 : ");
 		scanf("%s", grd_tmp->classname);
+		myflush();
+
 
 		printf("성적 : ");
 		while (1) {
 			scanf("%d", &(grd_tmp->grade));
+			myflush();
+
 			if (grd_tmp->grade >= 0 && grd_tmp->grade <= 100) {
 				grd_tmp=gradechange(grd_tmp, stu_tmp); //맞나....?
 				break;
 			}
 			else {
 				printf("1~100 사이의 수를 입력해주세요.\n");
-				myflush();
 				continue;
 			}
 		}
@@ -244,29 +247,24 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 		printf("학점 : ");
 		while (1) {
 			scanf("%d", &(grd_tmp->credit));
+			myflush();
+			
 			if (grd_tmp->credit >= 1 && grd_tmp->credit <= 9) {
 				break;
 			}
 			else { 
 				printf("1~9 사이의 수를 입력해주세요.\n");
-				myflush();
 				continue;
 			}
 		}
 		grd_connect(grd_tmp); //성적 연결
 		fwrite(grd_tmp, sizeof(Grade), 1, ifp_g); //파일 입력
 		
-	//연결됐는지 확인
-	Grade* grd_curr = grd_head;
-	while(grd_curr!=grd_tail){
-	//for(Grade *grd_tmp=grd_head; grd_tmp!=NULL; grd_tmp=grd_tmp->next){
-		printf("%d\t %s\t %d\t %d\n", grd_curr->ID, grd_curr->classname, grd_curr->grade, grd_curr->credit);
-		grd_curr=grd_curr->next;
-	}
 		
 		printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
 		while(1){
 			scanf("%d", &num);
+			myflush();
 //			free(grd_tmp);
 //			free(stu_tmp);
 			if (num == 0) {
@@ -283,6 +281,15 @@ int gradeinput(FILE* ifp_g) { //2. 성적입력
 		free(grd_tmp);
 		free(stu_tmp);
 	}
+	
+	//연결됐는지 확인
+	Grade* grd_curr = grd_head;
+	while(grd_curr!=NULL){
+	//for(Grade *grd_tmp=grd_head; grd_tmp!=NULL; grd_tmp=grd_tmp->next){
+		printf("%d\t %s\t %d\t %d\n", grd_curr->ID, grd_curr->classname, grd_curr->grade, grd_curr->credit);
+		grd_curr=grd_curr->next;
+	}
+
 	return 0;
 }
 
