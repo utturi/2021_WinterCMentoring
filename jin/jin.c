@@ -11,7 +11,7 @@
 
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
 typedef struct subject_grade{
-	char * subject;
+	char subject[16];
 	int grade[5];//grade[0]은 2자리 성적, grade[1]은 10*평점, grade[2],grade[3]은 등급의 아스키 코드값을 담게 할 것
 	int complete;
 	struct subject_grade *next;
@@ -20,8 +20,8 @@ typedef struct subject_grade{
 //학생의 정보(학번, 이름, 비밀번호, 과목head주소-subhead)를 담고 있는 구조체
 typedef struct all_node{
 	int student_id;
-	char * name;
-	char * password;
+	char name[16];
+	char password[16];
 	subject * subhead; //과목구조체의 head를 가리키게 하여 순환을 시작하는 역할
 	struct all_node *next;//다음 학생과 연결해주는 역할
 }student;
@@ -95,35 +95,35 @@ if(cur==NULL)
 printf("귀하의 학번 정보가 없습니다!\n");
 return;
 }
-
+ */
 //2. 성적 입력
 void grade_array(int grade[]){
-if(grade[0]/10>=9){
-grade[1]+=40; grade[2]+='A';
-}
-else if(grade[0]/10==8){
-grade[1]+=30; grade[2]+='B';
-}
-else if(grade[0]/10==7){
-grade[1]+=20; grade[2]+='C';
-}
-else if(grade[0]/10==6){
-grade[1]+=10; grade[2]+='D';
-}
-else{
-grade[2]+='F';
-}
-if(grade[1]!=0){
-if(grade[0]%10>=7){
-grade[1]+=5; grade[3]+='+';
-}
-else if(grade[0]%10>=4){
-	grade[1]+=3; grade[3]+='0';
-}
-else
-grade[3]+='-';
-}
-return;
+	if(grade[0]/10>=9){
+		grade[1]+=40; grade[2]+='A';
+	}
+	else if(grade[0]/10==8){
+		grade[1]+=30; grade[2]+='B';
+	}
+	else if(grade[0]/10==7){
+		grade[1]+=20; grade[2]+='C';
+	}
+	else if(grade[0]/10==6){
+		grade[1]+=10; grade[2]+='D';
+	}
+	else{
+		grade[2]+='F';
+	}
+	if(grade[1]!=0){
+		if(grade[0]%10>=7){
+			grade[1]+=5; grade[3]+='+';
+		}
+		else if(grade[0]%10>=4){
+			grade[1]+=3; grade[3]+='0';
+		}
+		else
+			grade[3]+='-';
+	}
+	return;
 }
 
 void add_subect(subject * cur){
@@ -146,13 +146,13 @@ void add_subect(subject * cur){
 void add_stu(student * prev, student * cur){
 	subject *sub_head = (subject*)malloc(sizeof(subject));
 	sub_head-> next = NULL;
-	subjecgt * cur;
+	subject * cur;
 	cur = head;
 	student * tmp = (student*)malloc(sizeof(student));
 	int contnum=1;
 	printf("학번: ");
 	scanf("%d", &tmp->student_id);
-	while(contnnum){
+	while(contnum){
 		add_subject(cur);
 		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
 		scanf("%d", &contnum);
@@ -165,7 +165,7 @@ void add_stu(student * prev, student * cur){
 	//파일 입력 추가
 	return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
 };
-*/
+
 
 
 //3. 학생정보등록
@@ -174,7 +174,6 @@ void input_student(void){
 	//파일에 쓰는 과정 넣을 것: 바로바로 업데이트
 
 	student * cur = (student *)malloc(sizeof(student));
-	cur = head -> next;
 	student * tmp = (student *)malloc(sizeof(student));
 
 	printf("학생이름: ");
@@ -184,8 +183,8 @@ void input_student(void){
 	printf("비밀번호: ");
 	scanf("%s", tmp->password);
 	if(head!=NULL){
-		cur = head->next;
-		while(cur!=NULL){
+		cur = head;
+		while(cur->next!=NULL){
 			cur = cur->next;}
 		cur->next = tmp;
 		tmp->next = NULL;
@@ -199,7 +198,7 @@ void input_student(void){
 	return;
 }
 
-
+/*
 //4. 학생정보삭제
 void delete_student(void){
 	student * cur = (student *)malloc(sizeof(student));
@@ -247,26 +246,29 @@ void delete_student(void){
 //FILE *fp = fopen("Student.txt", "w");
 //FILE *fp = fopent("Grade.txt", "w");
 //: 새로파일 다시 쓰게 해서 파일 초기화 해줄 것...
-
+*/
 
 //메뉴별로 전환하는 함수 - switch문
-void change_page(int num, student * head){
+void change_page(int num){
 	switch(num){
-		/*case 1:
+		/*
+		case 1:
 		  check_grades();
 		  break;
-		  case 2:
-		  input_grades();
-		  break;*/
+		 */
+		case 2:
+			input_grades();
+			break;
+		
 		case 3:
 			input_student();
 			break;
 		case 4:
-			delete_student();
+			//delete_student();
 			break;
 		case 0:
 			printf("프로그램을 종료합니다.\n");
-			break;
+			return;
 	}
 	return;
 }
@@ -277,7 +279,7 @@ int main(void){
 	head = NULL;
 	while(1){
 		int num = menu();
-		change_page(num,head);
+		change_page(num);
 		if(num ==0)
 			break;
 	}
@@ -286,15 +288,15 @@ int main(void){
 	   cur = head->next;
 	   while(cur!=NULL){
 	   printf("%d\n", cur->student_id);
-	   }*/
+	   }
 
-	student *fcur = (student*)malloc(sizeof(student));
-	student *fprev = (student*)malloc(sizeof(student));
-	fcur = head->next;
-	while(fcur!=NULL){
-		fprev->next = fcur ->next;
-		free(fcur);
-		fcur = fprev;
-	}
+	   student *fcur = (student*)malloc(sizeof(student));
+	   student *fprev = (student*)malloc(sizeof(student));
+	   fcur = head->next;
+	   while(fcur!=NULL){
+	   fprev->next = fcur ->next;
+	   free(fcur);
+	   fcur = fprev;
+	   }*/
 	return 0;
 }
