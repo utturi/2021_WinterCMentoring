@@ -211,7 +211,7 @@ void delete_student(student * head){
 			if(strcmp(cur->sutdent_id, del_stu_id)==0){
 				printf("<%s>님의 정보를 삭제하시겠습니까?<y or n>\n", cur->name);
 				scanf("%c", &yorn);
-				if(your == 'y' || yorn =='Y'){
+				if(yorn == 'y' || yorn =='Y'){
 					strpy(tmp_name, cur->name);
 					prev->next = cur->next;
 					free(cur);
