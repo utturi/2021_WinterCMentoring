@@ -12,7 +12,7 @@ typedef struct student{
 typedef struct grade{
     int code;
     char class[20];
-    int grade;
+    char grade[5];
     int abcf;
     int sum; // 이수학점
     struct grade *next;
@@ -25,6 +25,7 @@ void checkgrade();
 void inputgrade();
 void inputstudent();
 void delete();
+void transgrade();
 void myflush();
 int main()
 {
@@ -96,9 +97,11 @@ void checkgrade() //성적확인
                 if(st == 0){
                     while(cur != NULL){
                         if(cur->code == n){
-                            printf("<%s>님의 성적\n\n", scur->name);
-                            printf("이수학점 : %d", cur->sum);
-                            //printf("\n평점평균 : ")
+                            printf("<%s>님의 성적\n", scur->name);
+                            printf("%s : %s\n\n", cur->class, cur->grade);
+                            printf("이수학점 : %d\n", cur->sum);
+                            //printf("평점평균 : %d\n", );
+                            //printf("전체석차 : %d\n");
 
                             a++;
                             break;
@@ -123,7 +126,7 @@ void checkgrade() //성적확인
 void inputgrade() //성적입력
 {
     int n=1;
-    //Student *scur = shead;
+    int gr;
     Grade *newNode = (Grade *)malloc(sizeof(Grade));
     newNode->next = NULL;
 
@@ -148,7 +151,8 @@ void inputgrade() //성적입력
         printf("과목 : ");
         scanf("%s", newNode->class);
         printf("성적 : ");
-        scanf("%d", &(newNode->grade));
+        scanf("%d", &gr);
+        transgrade(gr, newNode);
         printf("학점 : ");
         scanf("%d", &(newNode->abcf));
 
@@ -158,6 +162,7 @@ void inputgrade() //성적입력
         }
         else{
             gtail->next = newNode;
+            //newNode->sum += newNode->abcf;
         }
 
         gtail = newNode;
@@ -166,9 +171,7 @@ void inputgrade() //성적입력
 
         printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
         scanf("%d", &n);
-        if(n == 0){
-            break;
-        }
+        
     }
 
     return;
@@ -202,7 +205,7 @@ void delete() //학생정보삭제
     char yorn;
     Student *curs = shead;
 
-    printf("관리자 비밀번호 : ");
+    printf("관리자 비밀번호 : "); //비밀번호 1234
     scanf("%d", &p);
     if(p != 1234){
         printf("비밀번호가 일치하지 않습니다!\n");
@@ -240,6 +243,52 @@ void delete() //학생정보삭제
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
     }
 
+    return;
+}
+void transgrade(int n, Grade *Node)
+{
+    if(n>=97 && n<=100){
+        strcpy(Node->grade, "A+");
+    }
+    else if(n<97 && n>93){
+        strcpy(Node->grade, "A0");
+    }
+    else if(n<94 && n>=90){
+        strcpy(Node->grade, "A-");
+    }
+    else if(n<90 && n>=87){
+        strcpy(Node->grade, "B+");
+    }
+    else if(n<87 && n>=84){
+        strcpy(Node->grade, "B0");
+    }
+    else if(n<84 && n>=80){
+        strcpy(Node->grade, "B-");
+    }
+    else if(n<80 && n>=77){
+        strcpy(Node->grade, "C+");
+    }
+    else if(n<77 && n>=74){
+        strcpy(Node->grade, "C0");
+    }
+    else if(n<74 && n>=70){
+        strcpy(Node->grade, "C-");
+    }
+    else if(n<70 && n>=67){
+        strcpy(Node->grade, "D+");
+    }
+    else if(n<67 && n>=64){
+        strcpy(Node->grade, "D0");
+    }
+    else if(n<64 && n>=60){
+        strcpy(Node->grade, "D-");
+    }
+    else if(n<60){
+        strcpy(Node->grade, "F");
+    }
+    else{
+        return;
+    }
     return;
 }
 void myflush()
