@@ -25,7 +25,7 @@ void checkgrade();
 void inputgrade();
 void inputstudent();
 void delete();
-void transgrade();
+void transgrade(int, Grade *);
 void myflush();
 int main()
 {
