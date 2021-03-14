@@ -1,8 +1,8 @@
+//성적입력하고 성적확인후에 다시 성적입력을 하면 입력(저장?)이 안되는듯..................
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-//성적입력하고 성적확인후에 다시 성적입력을 하면 입력(저장?)이 안되는듯..................
 
 typedef struct student{
     char name[50];
@@ -15,6 +15,8 @@ typedef struct grade{
     int code;
     char class[20];
     char grade[5];
+    double ave; // 평점저장
+    //double realave;
     int abcf;
     int sum; // 이수학점
     struct grade *next;
@@ -102,7 +104,7 @@ void checkgrade() //성적확인
                             printf("<%s>님의 성적\n", scur->name);
                             printf("%s : %s\n\n", cur->class, cur->grade);
                             printf("이수학점 : %d\n", cur->sum);
-                            //printf("평점평균 : %d\n", );
+                            printf("평점평균 : %.1f\n", cur->ave);
                             //printf("전체석차 : %d\n");
 
                             a++;
@@ -207,7 +209,7 @@ void delete() //학생정보삭제
     char yorn;
     Student *curs = shead;
 
-    printf("관리자 비밀번호 : "); //비밀번호 1234
+    printf("관리자 비밀번호 : "); // 관리자 비밀번호 1234
     scanf("%d", &p);
     if(p != 1234){
         printf("비밀번호가 일치하지 않습니다!\n");
@@ -238,10 +240,11 @@ void delete() //학생정보삭제
             shead = curs->next;
         }
         else{
-            curs->next = curs->next->next; //..????
+            //curs->next = curs->next->next;
+        
         }
 
-        //삭제코드  ..??? ? ??
+        //삭제코드  ..??? 
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
     }
 
@@ -251,42 +254,55 @@ void transgrade(int n, Grade *Node)
 {
     if(n>=97 && n<=100){
         strcpy(Node->grade, "A+");
+        Node->ave = 4.5;
     }
     else if(n<97 && n>93){
         strcpy(Node->grade, "A0");
+        Node->ave = 4.3;
     }
     else if(n<94 && n>=90){
         strcpy(Node->grade, "A-");
+        Node->ave = 4.0;
     }
     else if(n<90 && n>=87){
         strcpy(Node->grade, "B+");
+        Node->ave = 3.5;
     }
     else if(n<87 && n>=84){
         strcpy(Node->grade, "B0");
+        Node->ave = 3.3;
     }
     else if(n<84 && n>=80){
         strcpy(Node->grade, "B-");
+        Node->ave = 3.0;
     }
     else if(n<80 && n>=77){
         strcpy(Node->grade, "C+");
+        Node->ave = 2.5;
     }
     else if(n<77 && n>=74){
         strcpy(Node->grade, "C0");
+        Node->ave = 2.3;
     }
     else if(n<74 && n>=70){
         strcpy(Node->grade, "C-");
+        Node->ave = 2.0;
     }
     else if(n<70 && n>=67){
         strcpy(Node->grade, "D+");
+        Node->ave = 1.5;
     }
     else if(n<67 && n>=64){
         strcpy(Node->grade, "D0");
+        Node->ave = 1.3;
     }
     else if(n<64 && n>=60){
         strcpy(Node->grade, "D-");
+        Node->ave = 1.0;
     }
     else if(n<60){
         strcpy(Node->grade, "F");
+        Node->ave = 0;
     }
     else{
         return;
