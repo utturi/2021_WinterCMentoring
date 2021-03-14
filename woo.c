@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+//성적입력하고 성적확인후에 다시 성적입력을 하면 입력(저장?)이 안되는듯..................
+
 typedef struct student{
     char name[50];
     int code;
