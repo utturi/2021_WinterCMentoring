@@ -1,6 +1,3 @@
-//성적입력하고 성적확인후에 다시 성적입력을 하면 입력(저장?)이 안되는듯.................. 
-// 그냥 성적확인 이 안된다... !!!!
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -133,10 +130,10 @@ void inputgrade() //성적입력
 {
     int n=1;
     int gr;
-    Grade *newNode = (Grade *)malloc(sizeof(Grade));
-    newNode->next = NULL;
-
     while(n == 1){
+        Grade *newNode = (Grade *)malloc(sizeof(Grade));
+        newNode->next = NULL;
+        
         int a=0;
         Student *scur = shead;
 
