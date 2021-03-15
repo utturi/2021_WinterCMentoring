@@ -222,6 +222,7 @@ void delete() //학생정보삭제
                 s++;
                 break;
             }
+            prev = curs;
             curs = curs->next;
         }
         if(s != 1){
@@ -234,16 +235,16 @@ void delete() //학생정보삭제
     myflush();
     scanf("%c", &yorn);
 
-    if(yorn == 'y'){
+    if(yorn == 'y'){ 
         if(curs == shead){
             shead = curs->next;
         }
         else{
-            prev = curs;
-            curs = curs->next;
-            //free(prev);
+            prev->next = curs->next;
+            free(prev);
         }
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
+        curs = curs->next;
     }
 
     return;
