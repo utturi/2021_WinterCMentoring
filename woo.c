@@ -104,7 +104,7 @@ void checkgrade() //1 성적확인
                 if(st == 0){
                     while(cur != NULL){
                         if(cur->code == n){
-                            printf("<%s>님의 성적\n", scur->name);
+                            printf("\n<%s>님의 성적\n", scur->name);
                             cur->realave = 0;
                             gcur = cur;
                             while(gcur != NULL){
@@ -116,7 +116,7 @@ void checkgrade() //1 성적확인
                                 gcur = gcur->next;
                             }
                             printf("\n이수학점 : %d\n", sum);
-                            cur->realsum = sum;
+                            //cur->realsum = sum;
                             printf("평점평균 : %.1f\n", (cur->realave)/sum); 
                             rank = ranking(cur);
                             printf("전체석차 : %d\n", rank); // ???
@@ -151,7 +151,6 @@ void inputgrade() //2 성적입력
         Grade *Node = (Grade *)malloc(sizeof(Grade));
         newNode->next = NULL;
         int a=0;
-        int b=0;
 
         printf("학번 : ");
         scanf("%d", &(newNode->code));
@@ -218,6 +217,8 @@ void delete() //4 학생정보삭제
     char yorn;
     Student *curs = shead;
     Student *prev = (Student *)malloc(sizeof(Student));
+    Grade *gcur = ghead;
+    Grade *gprev = (Grade *)malloc(sizeof(Grade));
 
     printf("관리자 비밀번호 : "); // 관리자 비밀번호 1234
     scanf("%d", &p);
@@ -241,6 +242,13 @@ void delete() //4 학생정보삭제
             curs = shead;
         }
     }
+    while(gcur != NULL){ // 성적삭제위해
+        if(gcur->code == curs->code){
+            break;
+        }
+        gprev = gcur;
+        gcur = gcur->next;
+    }
     
     printf("<%s>님의 정보를 삭제하시겠습니까? <y or n> ", curs->name);
     myflush();
@@ -248,14 +256,16 @@ void delete() //4 학생정보삭제
 
     if(yorn == 'y'){ 
         if(curs == shead){
-            shead = curs->next;
+            shead = curs->next; // 학생정보삭제
+            ghead = gcur->next; // 성적삭제
         }
         else{
-            prev->next = curs->next;
-            free(prev);
+            prev->next = curs->next; //학생정보삭제
+            gprev->next = gcur->next; //성적삭제
         }
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
         curs = curs->next;
+        gcur = gcur->next;
     }
     else if(yorn == 'n'){
         printf("<%s>님의 정보를 삭제하지 않았습니다!\n", curs->name);
