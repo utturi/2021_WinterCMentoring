@@ -88,6 +88,7 @@ void checkgrade() //성적확인
     char pw[20];
     int n, st;
     int a=0;
+    //int b=1;
 
     printf("학번 : ");
     scanf("%d", &n);
@@ -177,7 +178,6 @@ void inputgrade() //성적입력
         scanf("%d", &n);
         
     }
-
     return;
 }
 void inputstudent() //학생정보등록
@@ -208,6 +208,7 @@ void delete() //학생정보삭제
     int s=0;
     char yorn;
     Student *curs = shead;
+    Student *prev = (Student *)malloc(sizeof(Student));
 
     printf("관리자 비밀번호 : "); // 관리자 비밀번호 1234
     scanf("%d", &p);
@@ -240,11 +241,9 @@ void delete() //학생정보삭제
             shead = curs->next;
         }
         else{
-            //curs->next = curs->next->next;
-        
+            prev = curs;
+            curs = curs->next;
         }
-
-        //삭제코드  ..??? 
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
     }
 
