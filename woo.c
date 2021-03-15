@@ -243,6 +243,7 @@ void delete() //학생정보삭제
         else{
             prev = curs;
             curs = curs->next;
+            //free(prev);
         }
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
     }
