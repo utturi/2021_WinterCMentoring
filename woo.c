@@ -14,20 +14,21 @@ typedef struct grade{
     char class[20];
     char grade[5];
     double ave; // 평점저장
-    //double realave;
+    double realave;
     int abcf;
-    int sum; // 이수학점
+    double realsum; // 석차계산용 
     struct grade *next;
 } Grade;
 
 Student *shead, *stail;
 Grade *ghead, *gtail;
 
-void checkgrade();
-void inputgrade();
-void inputstudent();
-void delete();
-void transgrade(int, Grade *);
+void checkgrade(); // 1. 성적확인
+void inputgrade(); // 2. 성적입력
+void inputstudent(); // 3. 학생정보등록
+void delete(); // 4. 학생정보삭제
+void transgrade(int, Grade *); // 등급변환
+int ranking(Grade *); // 석차정렬
 void myflush();
 int main()
 {
@@ -79,14 +80,15 @@ int main()
     fclose(sp);
     return 0;
 }
-void checkgrade() //성적확인
+void checkgrade() //1 성적확인
 {
     Student *scur = shead;
     Grade *cur = ghead;
+    Grade *gcur = (Grade *)malloc(sizeof(Grade));
     char pw[20];
-    int n, st;
+    int n, st, rank;
     int a=0;
-    //int b=1;
+    int sum=0; // 이수학점
 
     printf("학번 : ");
     scanf("%d", &n);
@@ -101,10 +103,21 @@ void checkgrade() //성적확인
                     while(cur != NULL){
                         if(cur->code == n){
                             printf("<%s>님의 성적\n", scur->name);
-                            printf("%s : %s\n\n", cur->class, cur->grade);
-                            printf("이수학점 : %d\n", cur->sum);
-                            printf("평점평균 : %.1f\n", cur->ave);
-                            //printf("전체석차 : %d\n");
+                            cur->realave = 0;
+                            gcur = cur;
+                            while(gcur != NULL){
+                                if(gcur->code == n){
+                                    printf("%s : %s\n", gcur->class, gcur->grade);
+                                    cur->realave += (gcur->abcf)*(gcur->ave);
+                                    sum += gcur->abcf;
+                                }
+                                gcur = gcur->next;
+                            }
+                            printf("\n이수학점 : %d\n", sum);
+                            cur->realsum = sum;
+                            printf("평점평균 : %.1f\n", (cur->realave)/sum); 
+                            rank = ranking(cur);
+                            printf("전체석차 : %d\n", rank); // ???
 
                             a++;
                             break;
@@ -126,16 +139,17 @@ void checkgrade() //성적확인
     
     return;
 }
-void inputgrade() //성적입력
+void inputgrade() //2 성적입력
 {
     int n=1;
     int gr;
     while(n == 1){
-        Grade *newNode = (Grade *)malloc(sizeof(Grade));
-        newNode->next = NULL;
-        
-        int a=0;
         Student *scur = shead;
+        Grade *newNode = (Grade *)malloc(sizeof(Grade));
+        Grade *Node = (Grade *)malloc(sizeof(Grade));
+        newNode->next = NULL;
+        int a=0;
+        int b=0;
 
         printf("학번 : ");
         scanf("%d", &(newNode->code));
@@ -157,20 +171,15 @@ void inputgrade() //성적입력
         scanf("%d", &gr);
         transgrade(gr, newNode);
         printf("학점 : ");
-        scanf("%d", &(newNode->abcf));
+        scanf("%d", &(newNode->abcf)); //몇학점?
 
         if(ghead == NULL){
             ghead = newNode;
-            newNode->sum = 0;
         }
         else{
             gtail->next = newNode;
-            //newNode->sum += newNode->abcf;
         }
-
         gtail = newNode;
-
-        newNode->sum += newNode->abcf;
 
         printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
         scanf("%d", &n);
@@ -178,7 +187,7 @@ void inputgrade() //성적입력
     }
     return;
 }
-void inputstudent() //학생정보등록
+void inputstudent() //3 학생정보등록
 {
     Student *newNode = (Student *)malloc(sizeof(Student));
     newNode->next = NULL;
@@ -200,7 +209,7 @@ void inputstudent() //학생정보등록
 
     return;
 }
-void delete() //학생정보삭제
+void delete() //4 학생정보삭제
 {
     int p, c;
     int s=0;
@@ -245,6 +254,13 @@ void delete() //학생정보삭제
         }
         printf("<%s>님의 정보를 삭제했습니다!\n", curs->name);
         curs = curs->next;
+    }
+    else if(yorn == 'n'){
+        printf("<%s>님의 정보를 삭제하지 않았습니다!\n", curs->name);
+    }
+    else{
+        printf("잘못된 입력입니다!\n");
+        return;
     }
 
     return;
@@ -307,6 +323,19 @@ void transgrade(int n, Grade *Node)
         return;
     }
     return;
+}
+int ranking(Grade *curr) //석차계산 .수정중..
+{
+    int r=1;
+    Grade *cur = ghead;
+    /*while(cur != NULL){
+        if(curr->sum < cur->sum){
+            r++;
+        }
+        cur = cur->next;
+    }*/
+
+    return r;
 }
 void myflush()
 {
