@@ -1,3 +1,5 @@
+// 석차...? 성적확인부분에서 평점평균계산하니까 석차가.. .. 어케하
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
