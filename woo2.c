@@ -1,4 +1,4 @@
-//파일에저장(입력), 석차
+//파일에저장(입력)
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -15,7 +15,8 @@ typedef struct grade{
     char class[20];
     char grade[5];
     double ave; // 평점저장 4.5 ~
-    double realave; //평점평균
+    double realave; // 평점평균 * sum
+    double average; // 평점평균
     int abcf; // 몇학점? 
     int sum; // 석차계산용 총 학점 저장
     struct grade *next;
@@ -29,7 +30,8 @@ void inputgrade(); // 2. 성적입력
 void inputstudent(); // 3. 학생정보등록
 void delete(); // 4. 학생정보삭제
 void transgrade(int, Grade *); // 등급변환
-int ranking(Grade *); // 석차정렬
+void ave(Grade *); // 평점평균계산
+int ranking(Grade *);
 void myflush();
 int main()
 {
@@ -108,15 +110,14 @@ void checkgrade() //1 성적확인
                             while(gcur != NULL){
                                 if(gcur->code == n){
                                     printf("%s : %s\n", gcur->class, gcur->grade);
-                                    //cur->realave += (gcur->abcf)*(gcur->ave);
-                                    //sum += gcur->abcf;
                                 }
                                 gcur = gcur->next;
                             }
                             printf("\n이수학점 : %d\n", cur->sum);
-                            printf("평점평균 : %.1f\n", cur->realave); 
+                            printf("평점평균 : %.1f\n", cur->average); 
                             rank = ranking(cur);
-                            printf("전체석차 : %d\n", rank); // ???
+                            
+                            printf("전체석차 : %d\n", rank);
 
                             a++;
                             break;
@@ -186,20 +187,17 @@ void inputgrade() //2 성적입력
             if(newNode->code == cur->code){
                 newNode->sum += newNode->abcf;
                 cur->sum += newNode->abcf;
-
-                //??
-                //cur->realave = (
-                //prev = cur;
                 b++;
             }
-            //prev = cur;
             cur = cur->next;
         }
         if(b == 0){
             newNode->sum += newNode->abcf;
-            newNode->realave = newNode->ave;
+            newNode->realave = 0;
         }
-        //printf("%.1f\n", newNode->realave);
+
+        ave(newNode);
+
         printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
         scanf("%d", &n);    
     }
@@ -353,16 +351,42 @@ void transgrade(int n, Grade *Node)
     }
     return;
 }
-int ranking(Grade *curr) //석차계산 .수정중..
+void ave(Grade *cur) //석차계산 .수정중..
+{
+    int a=0;
+    Grade *gcur = ghead;
+    while(gcur != NULL){
+        if(gcur->code == cur->code){
+            gcur->realave += (cur->abcf)*(cur->ave);
+            gcur->average = (gcur->realave)/(gcur->sum);
+            a++;
+        }
+        gcur = gcur->next;
+    }
+    if(a == 0){
+        cur->realave = (cur->ave)*(cur->abcf);
+        cur->average = (cur->realave)/(cur->sum);
+    }
+
+    return;
+}
+int ranking(Grade *cur)
 {
     int r=1;
-    Grade *cur = ghead;
-    /*while(cur != NULL){
-        if(curr->sum < cur->sum){
+    Grade *gcur = ghead;
+    while(gcur != NULL){
+        if(cur->average < gcur->average){
             r++;
         }
-        cur = cur->next;
-    }*/
+        else if(cur->average == gcur->average){
+            if(cur->sum < gcur->sum){
+                r++;
+            }
+        }
+        else{
+            ;
+        }
+    }
 
     return r;
 }
