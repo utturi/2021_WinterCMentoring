@@ -33,7 +33,7 @@ int menu(void);
 void show_grades(student * cur);
 void check_grades(void);
 void grade_array(int grade[]);
-subject * add_subject(void);
+void add_subject(subject *);
 void input_grades();
 void input_student(void);
 void delete_student(void);
@@ -175,11 +175,7 @@ void check_grades(){
 
 //2. 성적 입력
 void input_grades(){
-    /*subject *sub_head;
-      sub_head-> next = NULL;
-      subject * cur;*/
     student * cur = (student*)malloc(sizeof(student));
-    student * tmp = (student*)malloc(sizeof(student));
     int contnum=1;
     int id;
     printf("=============================================\n");
@@ -205,30 +201,28 @@ void input_grades(){
     //성적 추가하는 것 tmp를 반환해서 추가할 것인지 이대로 add_subject에서 추가할 것인지 결정해야 함
     subject * subcur = (subject *)malloc(sizeof(subject));
     subcur = cur->subhead;
-
     while(contnum){
         if(subcur==NULL){
-            subcur = add_subject();//현재 cur->subhead라고 한다면...cur->subhead에 새로 추가?
+            add_subject(subcur);//현재 cur->subhead라고 한다면...cur->subhead에 새로 추가?
         }
         else{
             while(subcur->next!=NULL){
                 subcur=subcur->next;
             }
-            subcur->next=add_subject();}
+            add_subject(subcur->next);}
         printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
         getchar();
         scanf("%d", &contnum);
         if(contnum == 0)
             break;
     }
-    //tmp->subhead = sub_head;
     //파일 입력 추가
     return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
 };
 
-subject * add_subject(void){
-    subject * cur = (subject *)malloc(sizeof(subject));
+void add_subject(subject * cur){
     subject * tmp = (subject *)malloc(sizeof(subject));
+    cur = (subject *)malloc(sizeof(subject));
     printf("과목: ");
     scanf("%s",tmp->subject);
     printf("성적: ");
@@ -236,9 +230,10 @@ subject * add_subject(void){
     grade_array(tmp->grade);
     printf("(이수)학점 : ");
     scanf("%1d", &tmp->complete);
-    tmp -> next = NULL;
+    cur = tmp;
+    cur -> next = NULL;
     //Grade.txt파일에 입력하는 것 추가할 것!
-    return tmp;
+    return;
 }
 
 void grade_array(int grade[]){
