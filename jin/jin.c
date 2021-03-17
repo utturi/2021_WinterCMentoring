@@ -220,9 +220,9 @@ void input_grades(){
     return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
 };
 
-void add_subject(subject * cur){
+void add_subject(subject * subcur){
     subject * tmp = (subject *)malloc(sizeof(subject));
-    cur = (subject *)malloc(sizeof(subject));
+    //subcur = (subject *)malloc(sizeof(subject));
     printf("과목: ");
     scanf("%s",tmp->subject);
     printf("성적: ");
@@ -230,8 +230,8 @@ void add_subject(subject * cur){
     grade_array(tmp->grade);
     printf("(이수)학점 : ");
     scanf("%1d", &tmp->complete);
-    cur = tmp;
-    cur -> next = NULL;
+    tmp -> next = NULL;
+    subcur = tmp;
     //Grade.txt파일에 입력하는 것 추가할 것!
     return;
 }
