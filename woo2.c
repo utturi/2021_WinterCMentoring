@@ -18,7 +18,8 @@ typedef struct grade{
     double realave; // 평점평균 * sum
     double average; // 평점평균
     int abcf; // 몇학점? 
-    int sum; // 석차계산용 총 학점 저장
+    int sum; // 석차계산용 총 학점 저장 (F포함)
+    int sum2; // 총학점 (F제외)
     struct grade *next;
 } Grade;
 
@@ -113,7 +114,12 @@ void checkgrade() //1 성적확인
                                 }
                                 gcur = gcur->next;
                             }
-                            printf("\n이수학점 : %d\n", cur->sum);
+                            if(cur->sum != cur->sum2){
+                                printf("\n이수학점 : %d\n", cur->sum2);
+                            }
+                            else{
+                                printf("\n이수학점 : %d\n", cur->sum);
+                            }
                             printf("평점평균 : %.1f\n", cur->average); 
                             rank = ranking(cur);
                             printf("전체석차 : %d\n", rank);
@@ -175,6 +181,7 @@ void inputgrade() //2 성적입력
         if(ghead == NULL){
             ghead = newNode;
             newNode->sum = 0;
+            newNode->sum2 = 0;
         }
         else{
             gtail->next = newNode;
@@ -183,14 +190,19 @@ void inputgrade() //2 성적입력
 
         while(cur != NULL){
             if(newNode->code == cur->code){
-                //newNode->sum += newNode->abcf;
                 cur->sum += newNode->abcf;
+                if(newNode->ave == 0.0){
+                    cur->sum2 += newNode->abcf;
+                }
                 b++;
             }
             cur = cur->next;
         }
         if(b == 0){
             newNode->sum += newNode->abcf;
+            if(newNode->ave == 0.0){
+                newNode->sum2 += newNode->abcf;
+            }
             newNode->realave = 0;
         }
 
@@ -342,7 +354,7 @@ void transgrade(int n, Grade *Node)
     }
     else if(n<60){
         strcpy(Node->grade, "F");
-        Node->ave = 0;
+        Node->ave = 0.0;
     }
     else{
         return;
