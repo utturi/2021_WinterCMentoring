@@ -173,7 +173,7 @@ void input_grades(){
 	int id;
 	printf("=============================================\n");
 	printf("[성적입력]\n");
-	if(head=NULL){
+	if(head==NULL){
 		printf("학생 정보를 먼저 저장해주십시오.\n");
 		printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
 		return;
@@ -194,99 +194,102 @@ void input_grades(){
 	//성적 추가하는 것 tmp를 반환해서 추가할 것인지 이대로 add_subject에서 추가할 것인지 결정해야 함
 	subject * subcur = (subject *)malloc(sizeof(subject));
 	subcur = cur->subhead;
-	if(cur->subhead==NULL){
-		cur->subhead = add_subject();//현재 cur->subhead라고 한다면...cur->subhead에 새로 추가?
-	}
+
 	while(contnum){
-		while(subcur->next!=NULL){
-			subcur=subcur->next;
-		}
-		subcur->next=add_subject();
-		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
-		scanf("%d", &contnum);
-		if(contnum == 0)
-			break;
-	}
-	//tmp->subhead = sub_head;
-	//파일 입력 추가
-	return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
+        if(subcur==NULL){
+            subcur = add_subject();//현재 cur->subhead라고 한다면...cur->subhead에 새로 추가?
+        }
+        else{
+        while(subcur->next!=NULL){
+            subcur=subcur->next;
+        }
+        subcur->next=add_subject();}
+        printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
+        getchar();
+        scanf("%d", &contnum);
+        if(contnum == 0)
+            break;
+    }
+    //tmp->subhead = sub_head;
+    //파일 입력 추가
+    return;//노드를 리턴하는 것으로 바꿀지는 다음에 생각하자...
 };
 
 subject * add_subject(void){
-	subject * cur = (subject *)malloc(sizeof(subject));
-	subject * tmp = (subject *)malloc(sizeof(subject));
-	printf("과목: ");
-	scanf("%s",tmp->subject);
-	printf("성적: ");
-	scanf("%2d", tmp->grade);
-	grade_array(tmp->grade);
-	printf("(이수)학점 : ");
-	scanf("%1d", &tmp->complete);
-	tmp -> next = NULL;
-	//Grade.txt파일에 입력하는 것 추가할 것!
-	return tmp;
+    subject * cur = (subject *)malloc(sizeof(subject));
+    subject * tmp = (subject *)malloc(sizeof(subject));
+    printf("과목: ");
+    scanf("%s",tmp->subject);
+    printf("성적: ");
+    scanf("%2d", tmp->grade);
+    grade_array(tmp->grade);
+    printf("(이수)학점 : ");
+    scanf("%1d", &tmp->complete);
+    tmp -> next = NULL;
+    //Grade.txt파일에 입력하는 것 추가할 것!
+    return tmp;
 }
 
 void grade_array(int grade[]){
-	if(grade[0]/10>=9){
-		grade[1]+=40; grade[2]+='A';
-	}
-	else if(grade[0]/10==8){
-		grade[1]+=30; grade[2]+='B';
-	}
-	else if(grade[0]/10==7){
-		grade[1]+=20; grade[2]+='C';
-	}
-	else if(grade[0]/10==6){
-		grade[1]+=10; grade[2]+='D';
-	}
-	else{
-		grade[2]+='F';
-	}
-	if(grade[1]!=0){
-		if(grade[0]%10>=7){
-			grade[1]+=5; grade[3]+='+';
-		}
-		else if(grade[0]%10>=4){
-			grade[1]+=3; grade[3]+='0';
-		}
-		else
-			grade[3]+='-';
-	}
-	return;
+    if(grade[0]/10>=9){
+        grade[1]+=40; grade[2]+='A';
+    }
+    else if(grade[0]/10==8){
+        grade[1]+=30; grade[2]+='B';
+    }
+    else if(grade[0]/10==7){
+        grade[1]+=20; grade[2]+='C';
+    }
+    else if(grade[0]/10==6){
+        grade[1]+=10; grade[2]+='D';
+    }
+    else{
+        grade[2]+='F';
+    }
+    if(grade[1]!=0){
+        if(grade[0]%10>=7){
+            grade[1]+=5; grade[3]+='+';
+        }
+        else if(grade[0]%10>=4){
+            grade[1]+=3; grade[3]+='0';
+        }
+        else
+            grade[3]+='-';
+    }
+    return;
 }
 
 
 //3. 학생정보등록
 void input_student(void){
-	//우선 노드에 추가한 후,
-	//파일에 쓰는 과정 넣을 것: 바로바로 업데이트
+    //우선 노드에 추가한 후,
+    //파일에 쓰는 과정 넣을 것: 바로바로 업데이트
 
-	student * cur = (student *)malloc(sizeof(student));
-	student * tmp = (student *)malloc(sizeof(student));
-	printf("=============================================\n");
-	printf("[학생정보등록]\n");
+    student * cur = (student *)malloc(sizeof(student));
+    student * tmp = (student *)malloc(sizeof(student));
+    printf("=============================================\n");
+    printf("[학생정보등록]\n");
 
-	printf("학생이름: ");
-	scanf("%s", tmp->name);
-	printf("학번: ");
-	scanf("%d", &tmp->student_id);
-	printf("비밀번호: ");
-	scanf("%s", tmp->password);
-	if(head!=NULL){
-		cur = head;
-		while(cur->next!=NULL){
-			cur = cur->next;}
-		cur->next = tmp;
-		tmp->next = NULL;
+    printf("학생이름: ");
+    scanf("%s", tmp->name);
+    printf("학번: ");
+    scanf("%d", &tmp->student_id);
+    printf("비밀번호: ");
+    scanf("%s", tmp->password);
+    if(head!=NULL){
+        cur = head;
+        while(cur->next!=NULL){
+            cur = cur->next;}
+        cur->next = tmp;
+        tmp->next = NULL;
 
-	}
-	else{
-		head = tmp;
-		tmp->next = NULL;
-	}
-	//FILE *fp = fopne("Student.txt", "a+");맞는지는 모르겠지만 일단은 뒤에 덧붙여주는 방식으로 파일에 추가해줄 것
-	return;
+    }
+    else{
+        head = tmp;
+        tmp->next = NULL;
+    }
+    //FILE *fp = fopne("Student.txt", "a+");맞는지는 모르겠지만 일단은 뒤에 덧붙여주는 방식으로 파일에 추가해줄 것
+    return;
 }
 
 /*
@@ -337,4 +340,4 @@ return ;
 //FILE *fp = fopen("Student.txt", "w");
 //FILE *fp = fopent("Grade.txt", "w");
 //: 새로파일 다시 쓰게 해서 파일 초기화 해줄 것...
- */
+*/
