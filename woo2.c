@@ -116,9 +116,7 @@ void checkgrade() //1 성적확인
                             printf("\n이수학점 : %d\n", cur->sum);
                             printf("평점평균 : %.1f\n", cur->average); 
                             rank = ranking(cur);
-                            
                             printf("전체석차 : %d\n", rank);
-
                             a++;
                             break;
                         }
@@ -186,7 +184,7 @@ void inputgrade() //2 성적입력
         while(cur != NULL){
             if(newNode->code == cur->code){
                 newNode->sum += newNode->abcf;
-                cur->sum += newNode->abcf;
+                //cur->sum += newNode->abcf;
                 b++;
             }
             cur = cur->next;
@@ -351,7 +349,7 @@ void transgrade(int n, Grade *Node)
     }
     return;
 }
-void ave(Grade *cur) //석차계산 .수정중..
+void ave(Grade *cur) //평점평균계산
 {
     int a=0;
     Grade *gcur = ghead;
@@ -370,7 +368,7 @@ void ave(Grade *cur) //석차계산 .수정중..
 
     return;
 }
-int ranking(Grade *cur)
+int ranking(Grade *cur) // 석차
 {
     int r=1;
     Grade *gcur = ghead;
@@ -386,6 +384,7 @@ int ranking(Grade *cur)
         else{
             ;
         }
+        gcur = gcur->next;
     }
 
     return r;
