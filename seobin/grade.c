@@ -46,8 +46,10 @@ void registerInfo(void);//3. 학생정보등록
 int gradecheck(void); //1. 성적확인	
 int gradeinput(void);//2. 성적입력
 int deleteInfo(void); //4. 학생정보 삭제
-void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev); //4-1. 학생정보삭제
-void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev); //4-2. 성적정보삭제
+//void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev); //4-1. 학생정보삭제
+void stu_deleteNode(Student* deleted, Student* prev);
+//void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev); //4-2. 성적정보삭제
+void grd_deleteNode(int ID);
 Grade* gradechange(Grade* grd_tmp, Student* stu_tmp); //성적 입력하면 A+, 4.5 바꿔주는 함수
 
 
@@ -88,20 +90,25 @@ int main(void) {
 				   break;
 			case 2:gradeinput(); //2. 성적입력
 				   Grade* grd_tmp=grd_head;
-				   while(grd_tmp->next!=grd_tail){
-					   printf("%d %s %d %d\n", grd_tmp->ID, grd_tmp->classname, grd_tmp->grade, grd_tmp->credit);
+				   while(grd_tmp!=grd_tail){
+					   printf("%d\t %s\t %d\t %d\n", grd_tmp->ID, grd_tmp->classname, grd_tmp->grade, grd_tmp->credit);
 					   grd_tmp=grd_tmp->next;
 				   }
 				   
 				   break;
 			case 3:registerInfo(); //3. 학생정보등록
 					Student *stu_tmp=stu_head;
-					while(stu_tmp->next!=stu_tail){
+					while(stu_tmp!=stu_tail){
 						printf("%s %d %s\n", stu_tmp->name, stu_tmp->ID, stu_tmp->password);
 						stu_tmp=stu_tmp->next;
 					}
 				   break;
 			case 4:deleteInfo(); //4. 학생정보삭제
+					Student *tmp=stu_head;
+					while(tmp!=stu_tail){
+						printf("%s %d %s\n", tmp->name, tmp->ID, tmp->password);
+						tmp=tmp->next;
+					}
 				   break;
 /*			case 5:
 				   while(grd_tmp->next!=grd_tail){
@@ -121,13 +128,12 @@ int main(void) {
 }
 
 
-//void stu_connect(Student** stu_head, Student* newNode) { //학생정보 구조체 연결
 void stu_connect(Student* newNode){ //학생정보 구조체 연결
 	if(stu_head==NULL){
 		stu_head=newNode;
 	}
 	else {
-		Student* p = *stu_head;
+		Student* p = stu_head;
 		while (p->next != stu_tail){
 			p = p->next;
 		}
@@ -182,8 +188,7 @@ void registerInfo() { //3. 학생정보등록
 	newNode->average=0;
 	newNode->rank=0;
 
-	stu_connect(&stu_head, newNode);
-
+	stu_connect(newNode);
 	//fwrite(newNode, sizeof(Student), 1, ifp_s);
 }
 
@@ -290,7 +295,7 @@ int gradeinput() { //2. 성적입력
 		for (stu_curr = stu_head; stu_curr != stu_tail; stu_curr = stu_curr->next) {
 			if(stu_curr==NULL || stu_curr->next==stu_tail){
 				printf("등록된 학번이 아닙니다!\n");
-				free(stu_curr);
+				//free(stu_curr);
 				free(grd_tmp);
 				free(stu_tmp);
 				return -1;
@@ -372,6 +377,7 @@ int deleteInfo(){ //4. 학생정보 삭제
 	int ID = 0;
 	char c;
 	Student* stu_tmp;
+	Student* stu_prev;
 	Grade* grd_tmp;
 
 	stu_tmp = (Student*)malloc(sizeof(Student));
@@ -381,13 +387,23 @@ int deleteInfo(){ //4. 학생정보 삭제
 	scanf("%s", key);
 	myflush();
 
-	while (1) {
+
 		if (strcmp(key,masterkey)==0) {
 			while(1){
-				printf("학번: ");
+				printf("\n학번 : ");
 				scanf("%d", &ID);
 				myflush();
-				for (stu_tmp == stu_head; stu_tmp == NULL; stu_tmp = stu_tmp->next) {
+		
+				if(ID >= 10000000 && ID <= 99999999){
+					break;
+				}
+				else{
+					printf("8자리 숫자를 입력하여 주세요.\n");
+					continue;
+				}
+			}
+				
+			for (stu_tmp == stu_head, stu_prev->next==stu_tmp; stu_tmp == NULL; stu_tmp = stu_tmp->next, stu_prev=stu_prev->next) {
 					if (ID == stu_tmp->ID) {
 						while (1) {
 							printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
@@ -396,8 +412,8 @@ int deleteInfo(){ //4. 학생정보 삭제
 							if(c=='y'){
 								printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
 								stu_tmp=stu_tmp->next;
-								stu_deleteNode(stu_head, stu_tmp->next, stu_tmp);
-								grd_deleteNode(grd_head, grd_tmp->next, grd_tmp);
+								stu_deleteNode(stu_tmp, stu_prev);
+								grd_deleteNode(stu_tmp->ID);
 								free(stu_tmp);
 								free(grd_tmp);
 								return 0;
@@ -417,15 +433,13 @@ int deleteInfo(){ //4. 학생정보 삭제
 					}
 				}
 			}
-		}
 		else { //비밀번호가 틀릴 경우
 			printf("비밀번호가 올바르지 않습니다!\n");
 			return -1;
 		}
-	}
 }
 
-void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
+void stu_deleteNode(Student* deleted, Student* prev) {
 	if (prev = NULL) {
 		stu_head = stu_head->next;
 	}
@@ -435,13 +449,22 @@ void stu_deleteNode(Student* stu_head, Student* deleted, Student* prev) {
 	}
 }
 
-void grd_deleteNode(Grade* grd_head, Grade* deleted, Grade* prev) {
-	if(prev = NULL) {
-		grd_head = grd_head->next;
+void grd_deleteNode(int ID) {
+	Grade* grd_tmp;
+	Grade* grd_prev;
+	grd_prev=grd_head;
+	grd_prev->next=grd_tmp;
+	
+	if(grd_prev=NULL){
+		grd_head=grd_head->next;
 	}
-	else {
-		prev->next = deleted->next;
-		free(deleted);
+
+	for(grd_tmp=grd_head; grd_tmp==NULL; grd_tmp=grd_tmp->next){
+		if(grd_tmp->ID==ID){
+			grd_prev->next=grd_tmp->next;
+			free(grd_tmp);
+		}
+		else{;}
 	}
 }
 
