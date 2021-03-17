@@ -11,8 +11,6 @@
 //성적입력에서 없는 학번 입력하면 입력이됨
 //학생정보를 등록하고 성적입력에서 학번에 문자를 입력하면 세그맨테이션 오류나면서 꺼짐
 //성적확인에서 등록하지 않은 학번을 입력하면 성적테이블이 출력됨
-//성적입력에서 1로 계속 입력받으면 가장 마지막에 입력ㄱ된 성적만 연결됨
-//학생정보 삭제에서 for문에 아예 안들어감
 
 
 #pragma warning(disable:4996)
@@ -68,23 +66,23 @@ char masterkey[30] = "123qwe";
 
 int main(void) {
 	int res = 0;
-//	FILE* ifp_s;
-//	FILE* ifp_g;
-//	ifp_s = fopen("student.txt", "w+");
-//	ifp_g = fopen("grade.txt", "w+");
+	//	FILE* ifp_s;
+	//	FILE* ifp_g;
+	//	ifp_s = fopen("student.txt", "w+");
+	//	ifp_g = fopen("grade.txt", "w+");
 
 	stu_head = NULL;
 	stu_tail = NULL;
 	grd_head = NULL;
 	grd_tail = NULL;
-//	stu_head->next=stu_tail;
-	
+	//	stu_head->next=stu_tail;
+
 	while (1) {
 		printf("\n[ Menu ]\n1. 성적확인\t2. 성적입력\t3. 학생정보등록\t\t4. 학생정보삭제\t\t0. 프로그램 종료\n");
-		
+
 		scanf("%d", &res);
 		myflush();
-	
+
 		switch (res) {
 			case 0: //0. 프로그램 종료
 				return 0;
@@ -96,33 +94,33 @@ int main(void) {
 					   printf("%d\t %s\t %d\t %d\n", grd_tmp->ID, grd_tmp->classname, grd_tmp->grade, grd_tmp->credit);
 					   grd_tmp=grd_tmp->next;
 				   }
-				   
+
 				   break;
 			case 3:registerInfo(); //3. 학생정보등록
-					Student *stu_tmp=stu_head;
-					while(stu_tmp!=stu_tail){
-						printf("%s %d %s\n", stu_tmp->name, stu_tmp->ID, stu_tmp->password);
-						stu_tmp=stu_tmp->next;
-					}
+				   Student *stu_tmp=stu_head;
+				   while(stu_tmp!=stu_tail){
+					   printf("%s %d %s\n", stu_tmp->name, stu_tmp->ID, stu_tmp->password);
+					   stu_tmp=stu_tmp->next;
+				   }
 				   break;
 			case 4:deleteInfo(); //4. 학생정보삭제
-					Student *tmp=stu_head;
-					while(tmp!=stu_tail){
-						printf("%s %d %s\n", tmp->name, tmp->ID, tmp->password);
-						tmp=tmp->next;
-					}
-				   break;
-/*			case 5:
-				   while(grd_tmp->next!=grd_tail){
-					   printf("%d %s %d %d\n", grd_tmp->ID, grd_tmp->classname, grd_tmp->grade, grd_tmp->credit);
-					   grd_tmp=grd_tmp->next;
+				   Student *tmp=stu_head;
+				   while(tmp!=stu_tail){
+					   printf("%s %d %s\n", tmp->name, tmp->ID, tmp->password);
+					   tmp=tmp->next;
 				   }
-					while(stu_tmp->next!=stu_tail){
-						printf("%s %d %s\n", stu_tmp->name, stu_tmp->ID, stu_tmp->password);
-						stu_tmp=stu_tmp->next;
-					}
 				   break;
-*/			default:printf("0~4 사이의 숫자를 입력해주세요.\n");
+				   /*			case 5:
+								while(grd_tmp->next!=grd_tail){
+								printf("%d %s %d %d\n", grd_tmp->ID, grd_tmp->classname, grd_tmp->grade, grd_tmp->credit);
+								grd_tmp=grd_tmp->next;
+								}
+								while(stu_tmp->next!=stu_tail){
+								printf("%s %d %s\n", stu_tmp->name, stu_tmp->ID, stu_tmp->password);
+								stu_tmp=stu_tmp->next;
+								}
+								break;
+					*/			default:printf("0~4 사이의 숫자를 입력해주세요.\n");
 				   break;
 		};
 	}
@@ -166,7 +164,7 @@ void registerInfo() { //3. 학생정보등록
 	printf("학생이름 : ");
 	scanf("%s", newNode->name);
 	myflush();
-	
+
 	while(1){
 		printf("학번 : ");
 		scanf("%d", &(newNode->ID));
@@ -200,7 +198,7 @@ int gradecheck() { //1. 성적확인
 	Student* stu_tmp;
 	grd_tmp=(Grade*)malloc(sizeof(grd_tmp));
 	stu_tmp=(Student*)malloc(sizeof(stu_tmp));
-//	grd_tmp=grd_head;
+	//	grd_tmp=grd_head;
 
 	//int total_credit = 0, total_grade=0, rank=1, cnt=0;
 	int cnt=0;
@@ -236,7 +234,7 @@ int gradecheck() { //1. 성적확인
 
 				if (strcmp(password, stu_tmp->password)==0) { //비밀번호가 맞을 경우
 					printf("\n<%s>님의 성적\n", stu_tmp->name);
-					
+
 					for(grd_tmp==grd_head; grd_tmp!=grd_tail; grd_tmp=grd_tmp->next){
 						if(grd_tmp->ID==ID/*stu_tmp->ID*/){
 							printf("%s : %s\n", grd_tmp->classname, grd_tmp->GPA);
@@ -270,14 +268,13 @@ int gradecheck() { //1. 성적확인
 
 int gradeinput() { //2. 성적입력
 	int  num = 0;
-	Student* stu_curr;
-	stu_curr=(Student*)malloc(sizeof(Student));
-	stu_curr=stu_head;
+	//	Student* stu_curr;
+	//	stu_curr=(Student*)malloc(sizeof(Student));
 	while (1) {
-		//Student* stu_curr;
-		stu_curr=(Student*)malloc(sizeof(Student));
-		//stu_curr = stu_head;
-		
+		Student* stu_curr;
+		//stu_curr=(Student*)malloc(sizeof(Student));
+		stu_curr = stu_head;
+
 		Grade *grd_tmp=(Grade*)malloc(sizeof(Grade)); //새로 입력하는 
 		Student* stu_tmp = (Student*)malloc(sizeof(Student)); //학생 정보에 A+, B+ 정보 더하려고
 
@@ -285,7 +282,7 @@ int gradeinput() { //2. 성적입력
 			printf("\n학번 : ");
 			scanf("%d", &(grd_tmp->ID));
 			myflush();
-	
+
 			if(grd_tmp->ID >= 10000000 && grd_tmp->ID <= 99999999){
 				break;
 			}
@@ -296,20 +293,25 @@ int gradeinput() { //2. 성적입력
 		}
 
 		for (stu_curr = stu_head; stu_curr != stu_tail; stu_curr = stu_curr->next) {
-			if(stu_curr==NULL || stu_curr->next==stu_tail){
+			/*if(stu_curr==NULL){
+				printf("등록된 학번이 아닙니다!\n");
+				//free(stu_curr);
+				free(grd_tmp);
+				free(stu_tmp);
+				return -1;
+			}*/
+			if(stu_curr->ID==grd_tmp->ID){
+				stu_tmp=stu_curr;
+				break;
+			}
+			else if(stu_curr->next == NULL){
 				printf("등록된 학번이 아닙니다!\n");
 				//free(stu_curr);
 				free(grd_tmp);
 				free(stu_tmp);
 				return -1;
 			}
-			else if(stu_curr->ID==grd_tmp->ID){
-				stu_tmp=stu_curr;
-				break;
-			}
-			else{
-				continue;
-			}
+			else;
 		}
 
 		printf("과목 : ");
@@ -336,7 +338,7 @@ int gradeinput() { //2. 성적입력
 		while (1) {
 			scanf("%d", &(grd_tmp->credit));
 			myflush();
-			
+
 			if (grd_tmp->credit >= 1 && grd_tmp->credit <= 9) {
 				break;
 			}
@@ -347,15 +349,15 @@ int gradeinput() { //2. 성적입력
 		}
 
 		grd_connect(grd_tmp); //성적정보 연결
-	//	fwrite(grd_tmp, sizeof(Grade), 1, ifp_g); //파일 입력
-		
-		
+		//	fwrite(grd_tmp, sizeof(Grade), 1, ifp_g); //파일 입력
+
+
 		printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
 		while(1){
 			scanf("%d", &num);
 			myflush();
-//			free(grd_tmp);
-//			free(stu_tmp);
+			//			free(grd_tmp);
+			//			free(stu_tmp);
 			if (num == 0) {
 				return -1;
 			}
@@ -367,11 +369,9 @@ int gradeinput() { //2. 성적입력
 				continue;
 			}	
 		}
-		free(grd_tmp);
-		free(stu_tmp);
-		//free(stu_curr);
+		//free(grd_tmp);
+		//free(stu_tmp);
 	}
-	free(stu_curr);
 	return 0;
 }
 
@@ -385,78 +385,62 @@ int deleteInfo(){ //4. 학생정보 삭제
 	Student* stu_prev;
 	Grade* grd_tmp;
 
-//	stu_tmp = (Student*)malloc(sizeof(Student));
-//	grd_tmp = (Grade*)malloc(sizeof(Grade));
+	stu_tmp = (Student*)malloc(sizeof(Student));
+	grd_tmp = (Grade*)malloc(sizeof(Grade));
 
 	printf("관리자 비밀번호 : ");
 	scanf("%s", key);
 	myflush();
-	
-	while(1){
-		if (strcmp(key,masterkey)==0) {
-			break;
-		}
-		else { //비밀번호가 틀릴 경우
-			printf("비밀번호가 올바르지 않습니다!\n");
-			return -1;
-		}
-	}
-		
-	while(1){
-		printf("\n학번 : ");
-		scanf("%d", &ID);
-		myflush();
-		if(ID >= 10000000 && ID <= 99999999){
-			break;
-		}
-		else{
-			printf("8자리 숫자를 입력하여 주세요.\n");
-			continue;
-		}
-	}
 
-	//여기 아예 안들어감
-	while(1){
-//	for (stu_prev = stu_head, stu_prev->next=stu_tmp; stu_tmp == NULL; stu_prev=stu_tmp, stu_tmp=stu_tmp->next) {
-		//printf("AAAAAAAAAAAAAAAAAAAAAAa");
-		stu_prev=stu_head;
-		stu_prev->next=stu_tmp;
 
-		if(stu_tmp==stu_tail){
-			break;
-		}
+	if (strcmp(key,masterkey)==0) {
+		while(1){
+			printf("\n학번 : ");
+			scanf("%d", &ID);
+			myflush();
 
-		if(stu_prev==NULL||stu_tmp->next==stu_tail){
-			printf("귀하의 학번 정보가 없습니다!\n");
-			return -1;
-		}
-		else if (ID == stu_tmp->ID) {
-			while (1) {
-				printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
-				scanf("%c", &c);
-				myflush();
-				if(c=='y'){
-					printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
-					stu_deleteNode(stu_tmp, stu_prev);
-					grd_deleteNode(stu_tmp->ID);
-					free(stu_tmp);
-					free(grd_tmp);
-					return 0;
-				}
-				else if(c=='n'){
-					printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
-					return 0;
-				}
-				else{
-					printf("y랑 n 중에 입력해주세요!\n");
-					continue;
-				}
+			if(ID >= 10000000 && ID <= 99999999){
+				break;
+			}
+			else{
+				printf("8자리 숫자를 입력하여 주세요.\n");
+				continue;
 			}
 		}
-		else{
-			stu_prev=stu_tmp;
-			stu_tmp=stu_tmp->next;
+
+		for (stu_tmp == stu_head, stu_prev->next==stu_tmp; stu_tmp == NULL; stu_tmp = stu_tmp->next, stu_prev=stu_prev->next) {
+			if (ID == stu_tmp->ID) {
+				while (1) {
+					printf("<%s>님의 정보를 삭제하시겠습니까? <y or n>", stu_tmp->name);
+					scanf("%c", &c);
+					myflush();
+					if(c=='y'){
+						printf("<%s>님의 정보를 삭제했습니다!\n", stu_tmp->name);
+						stu_tmp=stu_tmp->next;
+						stu_deleteNode(stu_tmp, stu_prev);
+						grd_deleteNode(stu_tmp->ID);
+						free(stu_tmp);
+						free(grd_tmp);
+						return 0;
+					}
+					else if(c=='n'){
+						printf("<%s>님의 정보를 안삭제함\n", stu_tmp->name);
+						return 0;
+					}
+					else{
+						printf("y랑 n 중에 입력해주세요!\n");
+						continue;
+					}
+				}
+			}
+			else{
+				printf("귀하의 학번 정보가 없습니다!\n");
+			}
 		}
+	}
+	else { //비밀번호가 틀릴 경우
+		printf("비밀번호가 올바르지 않습니다!\n");
+		return -1;
 	}
 }
 
@@ -475,7 +459,7 @@ void grd_deleteNode(int ID) {
 	Grade* grd_prev;
 	grd_prev=grd_head;
 	grd_prev->next=grd_tmp;
-	
+
 	if(grd_prev=NULL){
 		grd_head=grd_head->next;
 	}
