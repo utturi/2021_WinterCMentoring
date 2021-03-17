@@ -183,8 +183,8 @@ void inputgrade() //2 성적입력
 
         while(cur != NULL){
             if(newNode->code == cur->code){
-                newNode->sum += newNode->abcf;
-                //cur->sum += newNode->abcf;
+                //newNode->sum += newNode->abcf;
+                cur->sum += newNode->abcf;
                 b++;
             }
             cur = cur->next;
@@ -358,6 +358,7 @@ void ave(Grade *cur) //평점평균계산
             gcur->realave += (cur->abcf)*(cur->ave);
             gcur->average = (gcur->realave)/(gcur->sum);
             a++;
+            break;
         }
         gcur = gcur->next;
     }
@@ -376,11 +377,11 @@ int ranking(Grade *cur) // 석차
         if(cur->average < gcur->average){
             r++;
         }
-        else if(cur->average == gcur->average){
+        /*else if(cur->average == gcur->average){
             if(cur->sum < gcur->sum){
                 r++;
             }
-        }
+        }*/
         else{
             ;
         }
