@@ -70,6 +70,7 @@ int main(void) {
 	stu_tail = NULL;
 	grd_head = NULL;
 	grd_tail = NULL;
+	//stu_head=(Student*)malloc(sizeof(Student));
 
 //	Grade* grd_tmp=grd_head;
 //	Student *stu_tmp=stu_head;
@@ -142,7 +143,7 @@ void stu_connect(Student* newNode) { //학생정보 구조체 연결
 
 void grd_connect(Grade* newNode){ //성적정보 구조체 연결
 	if(grd_head==NULL){
-		grd_head=newNode;
+		grd_head->next=newNode;
 	}
 	else{
 		Grade *p=grd_head;
@@ -215,15 +216,15 @@ int gradecheck() { //1. 성적확인
 				if (strcmp(password, stu_tmp->password)==0) { //비밀번호가 맞을 경우
 					printf("\n<%s>님의 성적\n", stu_tmp->name);
 					for(grd_tmp==grd_head; grd_tmp!=grd_tail; grd_tmp=grd_tmp->next){
-					//while (grd_tmp != NULL) {
 						if(grd_tmp->ID==stu_tmp->ID){
 							printf("%s : %s\n", grd_tmp->classname, grd_tmp->GPA);
 							stu_tmp->total_credit += grd_tmp->credit;
 							stu_tmp->average += grd_tmp->grade;
 							cnt++;
 						}
-						else{;}
-					//	grd_tmp=grd_tmp->next;
+						else{
+							//printf("성적\n");
+						}
 					}
 					stu_tmp->average = (stu_tmp->average) / cnt;
 
