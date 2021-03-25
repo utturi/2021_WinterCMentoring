@@ -312,7 +312,6 @@ void delete() //4 학생정보삭제
     }
     
     printf("<%s>님의 정보를 삭제하시겠습니까? <y or n> ", curs->name);
-    myflush();
     scanf("%c", &yorn);
 
     if(yorn == 'y'){ 
