@@ -18,7 +18,7 @@ typedef struct grade{
     double average; // 평점평균
     int abcf; // 몇학점? 
     int sum; // 석차계산용 총 학점 저장 (F포함)
-    int sum2; //  에프만 저장된듯?
+    int sum2; //  에프만 저장
     struct grade *next;
 } Grade;
 
