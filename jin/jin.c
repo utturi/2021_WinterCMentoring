@@ -4,16 +4,14 @@
 
 /*추가
   <만들어야 할 것>
-  1. 학생정보 입력은 정상적으로 작동하지만, 학생의 성적이 제대로 연결되지 않음. 성적입력을 통해 학생 구조체 내의 과목 정보를 연결하는 부분이 잘 안되는 것 같음.
   2. 전체 석차를 위해 정렬하는 함수?
-  3. 파일 입출력
  */
 
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
 typedef struct subject_grade{
 	char subject[16];
 	int grade[5];//grade[0]은 2자리 성적, grade[1]은 10*평점, grade[2],grade[3]은 등급의 아스키 코드값을 담게 할 것
-	int complete;
+	float complete;
 	struct subject_grade *next;
 }subject;
 
@@ -23,13 +21,16 @@ typedef struct all_node{
 	char name[16];
 	char password[16];
 	subject *subhead; //과목구조체의 head를 가리키게 하여 순환을 시작하는 역할
+	double sum_of_completes;
+	double sum_of_multiplies;// 평점*이수학점의 합
+	double grades_average;
 	struct all_node *next;//다음 학생과 연결해주는 역할
 }student;
 
 student *head;
 
 int menu(void);
-void show_grades(student * cur);
+void show_grades(student *, int);
 void check_grades(void);
 void grade_array(int grade[]);
 subject* add_subject(void);
@@ -110,17 +111,15 @@ void change_page(int num){
 }
 
 // 1.성적확인
-void show_grades(student * cur){
-	//바로바로 업데이트된 정보를 확인해야 하기 때문에 여기에도 파일포인터를 이용해야함. 연결리스트만으로 하면 한계가 있음.
-	//아님 여기서 다시 업로드를 하는 방법을 취할 것!
+void show_grades(student * cur,int ranking){
 
 	subject *scur; // 선택된 학번의 subhead를 가지는 변수
 
 	scur = cur->subhead;
 
-	int num = 0, sum_complete = 0; // num: 과목개수, sum_complete: 이수학점의 합
-	double sum_grades; // sum_grade: 평점 평균구하기 위한 평점*학점의 합
 
+	//int num = 0, sum_completes = 0; // sum_completes: 이수학점의 합
+	//double sum_grades; 
 	// 성적입력이 아무것도 없을 때
 	if(cur->subhead == NULL){
 		printf("There's nothing saved. Go to [Menu]\n");
@@ -130,15 +129,18 @@ void show_grades(student * cur){
 	printf("<%s>님의 성적\n", cur->name);
 	while(scur != NULL){
 		printf("%s : %c%c\n", scur->subject, scur->grade[2], scur->grade[3]);
-		sum_complete += scur->complete;
-		sum_grades += (double)((scur->grade[1]/10))*(scur->complete);
+		//sum_completes += scur->completes;
+		//sum_grades += (double)((scur->grade[1]/10))*(scur->completes);
 		scur = scur->next;
-		num++;
 	}
 
-	printf("\n이수학점: %d\n", sum_complete);
-	printf("평점평균: %.f\n", (sum_grades/(double)sum_complete));
-	//전체석차 나중에 구현
+	printf("\n이수학점: %.f\n",cur->sum_of_completes);//student노드의 이수학점합으로 바꿔줄것
+	printf("평점평균: %.1f\n", cur->grades_average);
+	printf("전체석차: %d\n", ranking);//ranking변수 추가할 것...
+	//전체석차 .....평점 평균을 성적 입력할 때에 구해서 저장해주고 난 후 학생 노드들을 재 배열 한다..?
+	//ranking는 성적 출력에서 처음에 0으로 시작해서 현재 노드보다 다음 노드의 평점 평균이 크다면 +1을, 같다면 0을 더하도록 하고
+	//num_of_sameaverage변수에 1을 더하도록 하여 공동 순위를 표현하도록 하였다.
+
 
 	return ;
 }
@@ -148,16 +150,17 @@ void check_grades(){
 	int stu_id, check=1;
 	char pw[16]; 
 	student *cur;
+	int num_of_same_average=0, ranking=1;
 
 	if(head==NULL){
-		printf("not saved infomation -> need to change to korean\n");
+		printf("저장된 정보가 없습니다.\n");
 		return;
 	}
-
 	cur = head;
 	printf("학번: ");
 	scanf("%d", &stu_id);
 	while(cur!=NULL){
+		//여기서 계산?
 		if(cur->student_id==stu_id){
 			while(1){
 				printf("비밀번호: ");
@@ -167,18 +170,26 @@ void check_grades(){
 				else 
 					break;
 			}
-			show_grades(cur);
+			show_grades(cur,ranking);
+
 			return;
 		}
-		cur = cur->next;
+		//printf("error\n");
+		if(cur->next!=NULL){
+			if(cur->next->grades_average<cur->grades_average){
+				ranking += num_of_same_average;
+				ranking ++;
+			}	
+			else if(cur->next->grades_average==cur->grades_average){
+				num_of_same_average++;
+			}
+		}
+		cur = cur -> next;
 	}
-
 	if(cur == NULL)
 		printf("귀하의 학번 정보가 없습니다!\n");
-	
 	return;
 }
-
 //2. 성적 입력
 void input_grades(){
 	student * cur;
@@ -212,7 +223,6 @@ void input_grades(){
 		return;
 	}
 
-	//성적 추가하는 것 tmp를 반환해서 추가할 것인지 이대로 add_subject에서 추가할 것인지 결정해야 함
 	subject *subcur; // student의 subhead를 가지고 있는 cur
 
 	while(contnum){
@@ -232,15 +242,14 @@ void input_grades(){
 
 			newNode = add_subject();
 			subcur->next = newNode; // 성적노드를 연결
+			cur->sum_of_completes+=newNode->complete;
+			cur->sum_of_multiplies+=((newNode->grade[1])/10.0)*(newNode->complete);
 		}
-
+		cur->grades_average=(cur->sum_of_multiplies)/(cur->sum_of_completes);	
 		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
 		getchar();
 		scanf("%d", &contnum);
-		if(contnum == 0)
-			break;
 	}
-	//파일 입력 추가
 
 	return;
 };
@@ -255,7 +264,7 @@ subject* add_subject(){
 	scanf("%d", &tmp->grade[0]);
 	grade_array(tmp->grade);
 	printf("(이수)학점 : ");
-	scanf("%d", &tmp->complete);
+	scanf("%f", &tmp->complete);
 	tmp -> next = NULL;
 
 	//Grade.txt파일에 입력하는 것 추가할 것!
@@ -293,6 +302,11 @@ void grade_array(int grade[]){
 }
 
 
+//ranking 정렬함수
+//선택정렬
+
+
+
 //3. 학생정보등록
 void input_student(void){
 	//우선 노드에 추가한 후,
@@ -309,6 +323,8 @@ void input_student(void){
 	scanf("%d", &tmp->student_id);
 	printf("비밀번호: ");
 	scanf("%s", tmp->password);
+	tmp->sum_of_multiplies=0;
+	tmp->sum_of_completes=0;
 	if(head != NULL){
 		cur = head;
 		while(cur->next!=NULL){
