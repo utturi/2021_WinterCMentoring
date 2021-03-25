@@ -36,19 +36,6 @@ void myflush();
 int main()
 {
     int n;
-
-    FILE *gp, *sp;
-    char *fname1 = "grade.txt";
-    char *fname2 = "student.txt";
-    if((gp = fopen(fname1, "w+")) == NULL){
-        fprintf(stderr, "fopen error for %s\n", fname1);
-        exit(1);
-    }
-    if((sp = fopen(fname2, "w+")) == NULL){
-        fprintf(stderr, "fopen error for %s\n", fname2);
-        exit(1);
-    }
-
     shead = NULL;
     stail = NULL;
     ghead = NULL;
@@ -79,8 +66,6 @@ int main()
         printf("\n");
     }
 
-    fclose(gp);
-    fclose(sp);
     return 0;
 }
 void checkgrade() //1 성적확인
