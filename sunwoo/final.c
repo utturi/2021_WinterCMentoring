@@ -42,8 +42,10 @@ int main()
     gtail = NULL;
 
     while(1){
-        printf("[Menu]\n1. 성적확인  2. 성적입력  3. 학생정보등록  4. 학생정보삭제  0.프로그램종료\n");
+        printf("[Menu]\n1. 성적확인  2. 성적입력  3. 학생정보등록  4. 학생정보삭제  0. 프로그램종료\n");
         scanf("%d", &n);
+		myflush();
+
         if(n==0){
             break;
         }
@@ -87,13 +89,15 @@ void checkgrade() //1 성적확인
 			printf("8자리 숫자를 입력하여 주세요.\n");
 		}
 	}
+
     while(scur != NULL){
         if(scur->code == n){
             a++; // 학번이 일치하는 학생이 없으면 a=0유지: while문 돌지 않고 리턴
             while(a==1){
                 printf("비밀번호 : ");
                 scanf("%s", pw);
-                st = strcmp(pw, scur->psd);
+                myflush();
+				st = strcmp(pw, scur->psd);
                 if(st == 0){
                     while(cur != NULL){
                         if(cur->code == n){
@@ -168,6 +172,7 @@ void inputgrade() //2 성적입력
 
         printf("과목 : ");
         scanf("%s", newNode->class);
+		myflush();
 
         printf("성적 : ");
         while(1){
@@ -224,7 +229,9 @@ void inputgrade() //2 성적입력
         ave(newNode, k);
 
         printf("성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 : ");
-        scanf("%d", &n);    
+        scanf("%d", &n);  
+	  	myflush();
+
         if(n == 1){
             k++;
         }
@@ -246,7 +253,9 @@ void inputstudent() //3 학생정보등록
 
     printf("학생이름 : ");
     scanf("%s", newNode->name);
-    while(1){
+    myflush();
+
+	while(1){
 		printf("학번 : ");
 		scanf("%d", &(newNode->code));
 		myflush();
@@ -259,6 +268,7 @@ void inputstudent() //3 학생정보등록
 	}
     printf("비밀번호 : ");
     scanf("%s", newNode->psd);
+	myflush();
 
     return;
 }
@@ -274,7 +284,9 @@ void delete() //4 학생정보삭제
 
     printf("관리자 비밀번호 : "); // 관리자 비밀번호 1234
     scanf("%d", &p);
-    if(p != 1234){
+    myflush();
+
+	if(p != 1234){
         printf("비밀번호가 일치하지 않습니다!\n");
         return;
     }
@@ -313,6 +325,7 @@ void delete() //4 학생정보삭제
     
     printf("<%s>님의 정보를 삭제하시겠습니까? <y or n> ", curs->name);
     scanf("%c", &yorn);
+	myflush();
 
     if(yorn == 'y'){ 
         if(curs == shead){
