@@ -1,5 +1,5 @@
 //파일에저장(입력)
-//처음 한 학생의 성적 두 개 입력 할 때 "성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 :" 에 0 누르고 메뉴로 돌아갔다가 입력하면 평점평균계산이 이상하게 나옴... ㅜ
+//한 학생의 성적 두 개 이상 입력 할 때 "성적을 더 입력하시려면 1, 그만 입력 받으려면 0을 입력하시오 :" 에 0 누르고 메뉴로 돌아갔다가 입력하면 평점평균계산이 이상하게 나옴... ㅜ
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -34,7 +34,7 @@ void inputstudent(); // 3. 학생정보등록
 void delete(); // 4. 학생정보삭제
 void transgrade(int, Grade *); // 등급변환
 void ave(Grade *); // 평점평균계산
-int ranking(Grade *);
+int ranking(Grade *); // 성적확인하고자 하는 학생의 석차 계산
 void myflush();
 int main()
 {
@@ -99,7 +99,7 @@ void checkgrade() //1 성적확인
     scanf("%d", &n);
     while(scur != NULL){
         if(scur->code == n){
-            a++;
+            a++; // 일치하는 학생이 없으면 a=0유지: while문 돌지 않고 리턴
             while(a==1){
                 printf("비밀번호 : ");
                 scanf("%s", pw);
@@ -170,13 +170,13 @@ void inputgrade() //2 성적입력
         scanf("%s", newNode->class);
         printf("성적 : ");
         scanf("%d", &gr);
-        transgrade(gr, newNode);
+        transgrade(gr, newNode); // 점수입력받아서 바로 등급으로 변환저장
         printf("학점 : ");
         scanf("%d", &(newNode->abcf)); //몇학점?
 
         if(ghead == NULL){
             ghead = newNode;
-            newNode->sum = 0;
+            newNode->sum = 0; // 이수학점 누적저장(+=)위해 초기화
             newNode->sum2 = 0;
         }
         else{
