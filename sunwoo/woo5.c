@@ -60,8 +60,7 @@ int main()
             delete();
         }
         else{
-            printf("\n");
-            continue;
+            ;
         }
         printf("\n");
     }
@@ -81,7 +80,7 @@ void checkgrade() //1 성적확인
     scanf("%d", &n);
     while(scur != NULL){
         if(scur->code == n){
-            a++; // 일치하는 학생이 없으면 a=0유지: while문 돌지 않고 리턴
+            a++; // 학번이 일치하는 학생이 없으면 a=0유지: while문 돌지 않고 리턴
             while(a==1){
                 printf("비밀번호 : ");
                 scanf("%s", pw);
@@ -338,7 +337,7 @@ void transgrade(int n, Grade *Node)
         Node->ave = 0.0;
     }
     else{
-        return;
+        ;
     }
     return;
 }
