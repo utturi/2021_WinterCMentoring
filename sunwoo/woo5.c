@@ -195,7 +195,6 @@ void inputgrade() //2 성적입력
         }
         if(b == 0){
             newNode->sum += newNode->abcf;
-            //newNode->realave = 0;
             if(newNode->ave == 0.0){
                 newNode->sum2 += newNode->abcf;
             }
@@ -367,7 +366,6 @@ void ave(Grade *cur, int n) //평점평균계산
             if(n == 0){
                 gcur->realave += gcur->average*(gcur->sum-cur->abcf);
             }
-            printf("%.1f\n", gcur->realave);
             gcur->realave += (cur->abcf)*(cur->ave);
             gcur->average = (gcur->realave)/(gcur->sum);
             a++;
