@@ -117,9 +117,6 @@ void show_grades(student * student_cur){
 	printf("\n이수학점: %.f\n",student_cur->sum_of_completes);
 	printf("평점평균: %.1f\n", student_cur->grades_average);
 	printf("전체석차: %d\n", rank);
-	printf("확인: %f\n",student_cur->sum_of_completes);
-
-
 	return ;
 }
 
