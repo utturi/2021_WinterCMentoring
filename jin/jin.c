@@ -2,11 +2,10 @@
 #include<stdlib.h>
 #include<stdio.h>
 
-/*
-  추가 - 삭제함수 완료
-  에러: 평점 평균이 마지막에 입력한 이수학점만 받는다.
+/*추가-삭제함수완료
+  에러: 평점 평균이 마지막에 입력한 이수학점만 받음.
   <만들어야 할 것>
-  선택정렬로 평점평균 기준 내림차순 정렬 - swap함수
+	선택정렬로 평정평균 기준 내림차순 정렬 - swap
  */
 
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
@@ -313,12 +312,32 @@ void grade_array(int grade[]){
 	return;
 }
 
-/*
-void swap(student * node1, student * node2){
-	
-	return;
-}*/
 
+void rearrange_nodes(void){
+	student * sort_cur = (student *)malloc(sizeof(student));
+
+
+
+	student * tmp; tmp = NULL;
+	swap_data(tmp, a);//a바뀌기
+	swap_data(a, b);//a, b바꾸기
+	swap_data(b, tmp);//b 바꾸기
+	return;
+}
+
+void swap_data(student * node1, student node2){
+	student * node1 = (student *)malloc(sizeof(studnt *));
+	student * node2 = (student *)malloc(sizeof(studnt *));
+	
+	node1 -> student_id = node2 -> student_id;
+	strcpy(node1->name, node2->name);
+	strcpy(node1->password, node2->password);
+	node1->sum_of_completes = node2->sum_of_completes;
+	node1->sum_of_multiplies = node2->sum_of_multiplies;
+	node1->grades_average = node2->grades_average;
+
+	return;
+}
 //3. 학생정보등록
 void input_student(void){
 	student * cur;
