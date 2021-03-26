@@ -314,7 +314,6 @@ void input_student(void){
 	scanf("%s", tmp->password);
 	tmp->sum_of_multiplies=0;
 	tmp->sum_of_completes=0;
-	tmp->ranking = 0;
 
 	if(head != NULL){
 		cur = head;
