@@ -5,7 +5,7 @@
 /*추가-삭제함수완료
   에러: 평점 평균이 마지막에 입력한 이수학점만 받음.
   <만들어야 할 것>
-	선택정렬로 평정평균 기준 내림차순 정렬 - swap
+  선택정렬로 평정평균 기준 내림차순 정렬 - swap
  */
 
 //과목의 정보(이름,점수, 학점)를 담고 있는 구조체
@@ -92,7 +92,7 @@ int menu(void){
 void change_page(int num){
 	switch(num){
 		case 1:
-			//check_grades();//성적확인
+			check_grades();//성적확인
 			break;
 		case 2:
 			input_grades();//성적입력
@@ -130,8 +130,6 @@ void show_grades(student * cur,int ranking){
 	printf("<%s>님의 성적\n", cur->name);
 	while(scur != NULL){
 		printf("%s : %c%c\n", scur->subject, scur->grade[2], scur->grade[3]);
-		//sum_completes += scur->completes;
-		//sum_grades += (double)((scur->grade[1]/10))*(scur->completes);
 		scur = scur->next;
 	}
 
@@ -147,53 +145,52 @@ void show_grades(student * cur,int ranking){
 
 	return ;
 }
-/*
+
 //성적 확인함수
 void check_grades(){
-int stu_id, check=1;
-char pw[16]; 
-student *cur;
-int num_of_same_average=0, ranking=1;
+	int stu_id, check=1;
+	char pw[16]; 
+	student *cur;
+	int num_of_same_average=0, ranking=1;
 
-if(head==NULL){
-printf("저장된 정보가 없습니다.\n");
-return;
-}
-cur = head;
-printf("학번: ");
-scanf("%d", &stu_id);
-while(cur!=NULL){
-//여기서 계산?
-if(cur->student_id==stu_id){
-while(1){
-printf("비밀번호: ");
-scanf("%s", pw);
-if(strcmp(cur->password, pw) != 0)
-printf("비밀번호가 일치하지 않습니다!\n");
-else 
-break;
-}
-show_grades(cur,ranking);
+	if(head==NULL){
+		printf("저장된 정보가 없습니다.\n");
+		return;
+	}
+	cur = head;
+	printf("학번: ");
+	scanf("%d", &stu_id);
+	while(cur!=NULL){
+		//여기서 계산?
+		if(cur->student_id==stu_id){
+			while(1){
+				printf("비밀번호: ");
+				scanf("%s", pw);
+				if(strcmp(cur->password, pw) != 0)
+					printf("비밀번호가 일치하지 않습니다!\n");
+				else 
+					break;
+			}
+			show_grades(cur,ranking);
 
-return;
+			return;
+		}
+		//printf("error\n");
+		if(cur->next!=NULL){
+			if(cur->next->grades_average<cur->grades_average){
+				ranking += num_of_same_average;
+				ranking ++;
+			}	
+			else if(cur->next->grades_average==cur->grades_average){
+				num_of_same_average++;
+			}
+		}
+		cur = cur -> next;
+	}
+	if(cur == NULL)
+		printf("귀하의 학번 정보가 없습니다!\n");
+	return;
 }
-//printf("error\n");
-if(cur->next!=NULL){
-if(cur->next->grades_average<cur->grades_average){
-ranking += num_of_same_average;
-ranking ++;
-}	
-else if(cur->next->grades_average==cur->grades_average){
-num_of_same_average++;
-}
-}
-cur = cur -> next;
-}
-if(cur == NULL)
-printf("귀하의 학번 정보가 없습니다!\n");
-return;
-}
- */
 
 //2. 성적 입력
 void input_grades(){
@@ -312,23 +309,26 @@ void grade_array(int grade[]){
 	return;
 }
 
-
+/*
 void rearrange_nodes(void){
 	student * sort_cur = (student *)malloc(sizeof(student));
+	while(sort_cur!=NULL){
+		student * tmp; tmp = NULL;
 
 
 
-	student * tmp; tmp = NULL;
-	swap_data(tmp, a);//a바뀌기
-	swap_data(a, b);//a, b바꾸기
-	swap_data(b, tmp);//b 바꾸기
+		swap_data(tmp, a);//a바뀌기
+		swap_data(a, b);//a, b바꾸기
+		swap_data(b, tmp);//b 바꾸기
+		sort_cur = sort_cur->next;
+	}
 	return;
 }
 
 void swap_data(student * node1, student node2){
 	student * node1 = (student *)malloc(sizeof(studnt *));
 	student * node2 = (student *)malloc(sizeof(studnt *));
-	
+
 	node1 -> student_id = node2 -> student_id;
 	strcpy(node1->name, node2->name);
 	strcpy(node1->password, node2->password);
@@ -338,6 +338,7 @@ void swap_data(student * node1, student node2){
 
 	return;
 }
+*/
 //3. 학생정보등록
 void input_student(void){
 	student * cur;
@@ -417,8 +418,8 @@ void delete_student(void){
 				}
 			}
 		}
-			printf("비밀번호가 올바르지 않습니다!\n");
-			return;
+		printf("비밀번호가 올바르지 않습니다!\n");
+		return;
 	}
 	printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
 	return ;
