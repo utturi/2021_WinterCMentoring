@@ -22,6 +22,7 @@ typedef struct all_node{
 	char name[16];
 	char password[16];
 	subject *subhead; //과목구조체의 head를 가리키게 하여 순환을 시작하는 역할
+
 	double sum_of_completes;
 	double sum_of_multiplies;// 평점*이수학점의 합
 	double grades_average;
@@ -41,8 +42,8 @@ void input_student(void);
 void delete_student(void);
 void change_page(int);
 void rearrange_nodes(void);
-void ranking(void);
-//void swap_data(student *, student *);
+int ranking(student *);
+
 //main함수
 int main(void){
 	// 파일에서 연결리스트로 불러오는 함수 추가할 것
@@ -54,7 +55,6 @@ int main(void){
 			printf("프로그램 종료!\n");
 			break;
 		}
-		//printf("Error\n");
 	}
 	/*
 	   student *cur =(student*)malloc(sizeof(student));
@@ -91,6 +91,7 @@ int menu(void){
 
 	return num;
 }
+
 //메뉴별로 전환하는 함수 - switch문
 void change_page(int num){
 	switch(num){
@@ -116,14 +117,11 @@ void change_page(int num){
 
 // 1.성적확인
 void show_grades(student * student_cur){
-
 	subject *scur; // 선택된 학번의 subhead를 가지는 변수
+	int rank;
 
 	scur = student_cur->subhead;
 
-
-	//int num = 0, sum_completes = 0; // sum_completes: 이수학점의 합
-	//double sum_grades; 
 	// 성적입력이 아무것도 없을 때
 	if(student_cur->subhead == NULL){
 		printf("There's nothing saved. Go to [Menu]\n");
@@ -136,9 +134,11 @@ void show_grades(student * student_cur){
 		scur = scur->next;
 	}
 
+	rank = ranking(student_cur); // 석차계산
+
 	printf("\n이수학점: %.f\n",student_cur->sum_of_completes);//student노드의 이수학점합으로 바꿔줄것
 	printf("평점평균: %.1f\n", student_cur->grades_average);
-	printf("전체석차: %d\n", student_cur->ranking);
+	printf("전체석차: %d\n", rank);
 	printf("확인: %f\n",student_cur->sum_of_completes);
 	//ranking변수 추가할 것...
 	//전체석차 .....평점 평균을 성적 입력할 때에 구해서 저장해주고 난 후 학생 노드들을 재 배열 한다..?
@@ -164,7 +164,6 @@ void check_grades(){
 	printf("학번: ");
 	scanf("%d", &stu_id);
 	while(cur!=NULL){
-		//여기서 계산?
 		if(cur->student_id==stu_id){
 			while(1){
 				printf("비밀번호: ");
@@ -174,12 +173,10 @@ void check_grades(){
 				else
 					break;
 			}
-			cur->ranking = ranking;
 			show_grades(cur);
 
 			return;
 		}
-		//printf("error\n");
 		if(cur->next!=NULL){
 			if(cur->next->grades_average<cur->grades_average){
 				ranking += num_of_same_average;
@@ -194,41 +191,27 @@ void check_grades(){
 	if(cur == NULL)
 		printf("귀하의 학번 정보가 없습니다!\n");
 	return;
-}/*
-void check_grades(){
-	int stu_id, check=1;
-	char pw[16]; 
-	student *cur;
+}
 
-	if(head==NULL){
-		printf("저장된 정보가 없습니다.\n");
-		return;
-	}
-	cur = head;
-	printf("학번: ");
-	scanf("%d", &stu_id);
-	while(cur!=NULL){
-		//여기서 계산?
-		if(cur->student_id==stu_id){
-			while(1){
-				printf("비밀번호: ");
-				scanf("%s", pw);
-				if(strcmp(cur->password, pw) != 0)
-					printf("비밀번호가 일치하지 않습니다!\n");
-				else 
-					break;
-			}
-			show_grades(cur);
+// 선택된 학생의 석차를 계산해주는 함수
+int ranking(student *cur)
+{
+	student *tmp;
+	int cnt = 1; // 등수 계산 변수
 
-			return;
+	tmp = head;
+	while(tmp != NULL) {
+		// 선택된 학생보다 점수 높으면 ++
+		if(tmp->grades_average > cur->grades_average) {
+			cnt++;
 		}
-		//printf("error\n");
-			cur = cur -> next;
+		else;
+
+		tmp = tmp->next;
 	}
-	if(cur == NULL)
-		printf("귀하의 학번 정보가 없습니다!\n");
-	return;
-}*/
+
+	return cnt;
+}
 
 //2. 성적 입력
 void input_grades(){
@@ -250,9 +233,6 @@ void input_grades(){
 	scanf("%d", &id);
 
 	student_cur = head; // 여기서 cur은 학생정보들의 cur
-	/*cur->sum_of_completes=0;
-	  cur->sum_of_multiplies=0;
-	  cur->grades_average=0;*/
 
 	while(student_cur!=NULL){//student노드의 연결리스트의 마지막 노드까지 이동
 		if(student_cur->student_id==id)
@@ -296,26 +276,10 @@ void input_grades(){
 		getchar();
 		scanf("%d", &contnum);
 	}
-	//ranking();
-	printf("확인%d\n", student_cur->ranking);
-	rearrange_nodes();
+
 	return;
 };
 
-/*
-void ranking(void){
-	int num_of_same_average=0, ranking=1;
-	student * student_cur = (student *)malloc(sizeof(student));
-	student_cur = head;
-	while(student_cur!=NULL){
-				student_cur = student_cur->next;
-	}
-	if(student_cur==head)
-		student_cur->ranking = 1;
-	return;
-
-}
-*/
 // 성적노드를 리턴받는 것으로 교체
 subject* add_subject(){
 	subject * tmp = (subject *)malloc(sizeof(subject));
@@ -362,58 +326,6 @@ void grade_array(int grade[]){
 	return;
 }
 
-
-void rearrange_nodes(void){	//grade_average를 기준으로 내림차순 정렬
-	student * sort_cur = (student *)malloc(sizeof(student));
-	student * next_cur;
-	student * biggest_node= (student *)malloc(sizeof(student));
-	biggest_node = head;
-	next_cur = head;
-	while(next_cur!=NULL){
-		double biggest_average = next_cur->grades_average;
-		sort_cur = next_cur;
-		if(sort_cur!=biggest_node){
-			while(sort_cur!=NULL){
-				if(sort_cur->grades_average>biggest_average){
-					biggest_node = sort_cur;
-					biggest_average = biggest_node->grades_average;
-				}
-				sort_cur = sort_cur->next;
-			}
-		}
-		if(next_cur!=biggest_node){
-			int tmp;
-			tmp = biggest_node->ranking;
-			biggest_node->ranking = next_cur->ranking;
-			next_cur->ranking = biggest_node->ranking;
-		}
-		next_cur = next_cur->next;
-	}
-	return;
-}
-
-/*
-void ranking(void)
-{
-	student * student_cur;
-	student_cur = head;
-    int ranking=1;
-    while(head != NULL){
-        if(student_cur->average < student_cur->average){
-            ranking++;
-        }
-        else if(stducur->average == gcur->average){
-            
-        }
-		
-        student_node = student_node->next;
-    }
-
-    return;
-}
-*/			
-
-
 //3. 학생정보등록
 void input_student(void){
 	student * cur;
@@ -429,6 +341,8 @@ void input_student(void){
 	scanf("%s", tmp->password);
 	tmp->sum_of_multiplies=0;
 	tmp->sum_of_completes=0;
+	tmp->ranking = 0;
+
 	if(head != NULL){
 		cur = head;
 		while(cur->next!=NULL){
@@ -442,7 +356,7 @@ void input_student(void){
 	// 정보입력이 처음일 때
 	else{
 		head = tmp;
-		tmp->ranking = 1;
+		//tmp->ranking = 1;
 		tmp->next = NULL;
 	}
 	tmp->subhead = NULL; // subhead도 NULL로 초기화 필요
@@ -450,10 +364,9 @@ void input_student(void){
 	return;
 }
 
-///*
 //4. 학생정보삭제
 void delete_student(void){
-	student * cur;/* = (student *)malloc(sizeof(student));*/
+	student * cur;
 	student * prev;
 	char admin_pwd[18] = "admin1234";//관리자 비밀번호
 	char check_admin[18];
