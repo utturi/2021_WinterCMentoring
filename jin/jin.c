@@ -238,8 +238,6 @@ void input_grades(){
 		if(cur->subhead == NULL){ // cur->subhead는 학생노드에서 과목구조체의 head를 접근
 			newNode = add_subject(); // 함수에 리턴값으로 성적노드를 새롭게 받음
 			cur->subhead = newNode; // cur->subhead에 새로운 성적노드 연결
-			cur->sum_of_completes+=newNode->complete;
-			cur->sum_of_multiplies+=((newNode->grade[1])/10.0)*(newNode->complete);
 		}
 		else{
 			subcur = cur->subhead; 
@@ -250,9 +248,9 @@ void input_grades(){
 
 			newNode = add_subject();
 			subcur->next = newNode; // 성적노드를 연결
-			cur->sum_of_completes+=newNode->complete;
-			cur->sum_of_multiplies+=((newNode->grade[1])/10.0)*(newNode->complete);
 		}
+		if(newNode->grade[2]!='F') cur->sum_of_completes+=newNode->complete;
+		cur->sum_of_multiplies+=((newNode->grade[1])/10.0)*(newNode->complete);
 		cur->grades_average=(cur->sum_of_multiplies)/(cur->sum_of_completes);	
 		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
 		getchar();
@@ -275,7 +273,6 @@ subject* add_subject(){
 	scanf("%lf", &tmp->complete);
 	tmp -> next = NULL;
 
-	//Grade.txt파일에 입력하는 것 추가할 것!
 	return tmp;
 }
 
@@ -312,11 +309,15 @@ void grade_array(int grade[]){
 
 void rearrange_nodes(void){	//grade_average를 기준으로 내림차순 정렬
 	student * sort_cur = (student *)malloc(sizeof(student));
+	sort_cur = head;
 	while(sort_cur!=NULL){
 		double biggest_average;
 		student * prev_biggest_node;
 		while(){
 			= sort_cur;
+
+
+
 		}		
 		student * tmp; tmp = NULL;
 		swap_data(tmp, a);//a바뀌기
