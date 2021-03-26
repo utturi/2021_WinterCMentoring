@@ -94,33 +94,6 @@ void change_page(int num){
 }
 
 // 1.성적확인
-void show_grades(student * student_cur){
-	subject *scur; // 선택된 학번의 subhead를 가지는 변수
-	int rank;
-
-	scur = student_cur->subhead;
-
-	// 성적입력이 아무것도 없을 때
-	if(student_cur->subhead == NULL){
-		printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
-		return;
-	}
-
-	printf("<%s>님의 성적\n", student_cur->name);
-	while(scur != NULL){
-		printf("%s : %c%c\n", scur->subject, scur->grade[2], scur->grade[3]);
-		scur = scur->next;
-	}
-
-	rank = ranking(student_cur); // 석차계산
-
-	printf("\n이수학점: %.f\n",student_cur->sum_of_completes);
-	printf("평점평균: %.1f\n", student_cur->grades_average);
-	printf("전체석차: %d\n", rank);
-	return ;
-}
-
-//성적 확인함수
 void check_grades(){
 	int stu_id, check=1;
 	char pw[16];
@@ -172,6 +145,33 @@ int ranking(student *cur)
 	}
 
 	return cnt;
+}
+
+//성적 출력 함수
+void show_grades(student * student_cur){
+	subject *scur; // 선택된 학번의 subhead를 가지는 변수
+	int rank;
+
+	scur = student_cur->subhead;
+
+	// 성적입력이 아무것도 없을 때
+	if(student_cur->subhead == NULL){
+		printf("저장된 정보가 없으므로 [Menu]로 돌아갑니다.\n");
+		return;
+	}
+
+	printf("<%s>님의 성적\n", student_cur->name);
+	while(scur != NULL){
+		printf("%s : %c%c\n", scur->subject, scur->grade[2], scur->grade[3]);
+		scur = scur->next;
+	}
+
+	rank = ranking(student_cur); // 석차계산
+
+	printf("\n이수학점: %.f\n",student_cur->sum_of_completes);
+	printf("평점평균: %.1f\n", student_cur->grades_average);
+	printf("전체석차: %d\n", rank);
+	return ;
 }
 
 //2. 성적 입력
