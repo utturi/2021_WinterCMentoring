@@ -212,9 +212,9 @@ void input_grades(){
 	scanf("%d", &id);
 
 	cur = head; // 여기서 cur은 학생정보들의 cur
-	cur->sum_of_completes=0;
+	/*cur->sum_of_completes=0;
 	cur->sum_of_multiplies=0;
-	cur->grades_average=0;
+	cur->grades_average=0;*/
 
 	while(cur!=NULL){
 		if(cur->student_id==id)
@@ -309,23 +309,26 @@ void grade_array(int grade[]){
 	return;
 }
 
-/*
-void rearrange_nodes(void){
+
+void rearrange_nodes(void){	//grade_average를 기준으로 내림차순 정렬
 	student * sort_cur = (student *)malloc(sizeof(student));
 	while(sort_cur!=NULL){
+		double biggest_average;
+		student * prev_biggest_node;
+		while(){
+			= sort_cur;
+		}		
 		student * tmp; tmp = NULL;
-
-
-
 		swap_data(tmp, a);//a바뀌기
 		swap_data(a, b);//a, b바꾸기
 		swap_data(b, tmp);//b 바꾸기
+		//next 바꾸기도 추가
 		sort_cur = sort_cur->next;
 	}
 	return;
 }
 
-void swap_data(student * node1, student node2){
+void swap_data(student * node1, student node2){ //노드 데이터 전환환
 	student * node1 = (student *)malloc(sizeof(studnt *));
 	student * node2 = (student *)malloc(sizeof(studnt *));
 
@@ -338,7 +341,9 @@ void swap_data(student * node1, student node2){
 
 	return;
 }
-*/
+
+
+
 //3. 학생정보등록
 void input_student(void){
 	student * cur;
