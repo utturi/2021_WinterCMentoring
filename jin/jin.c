@@ -39,7 +39,8 @@ void input_grades();
 void input_student(void);
 void delete_student(void);
 void change_page(int);
-
+void rearrange_nodes(void);
+void swap_data(student *, student *);
 //main함수
 int main(void){
 	// 파일에서 연결리스트로 불러오는 함수 추가할 것
@@ -256,7 +257,7 @@ void input_grades(){
 		getchar();
 		scanf("%d", &contnum);
 	}
-
+	rearrange_nodes();
 	return;
 };
 
@@ -309,37 +310,55 @@ void grade_array(int grade[]){
 
 void rearrange_nodes(void){	//grade_average를 기준으로 내림차순 정렬
 	student * sort_cur = (student *)malloc(sizeof(student));
-	sort_cur = head;
-	while(sort_cur!=NULL){
-		double biggest_average;
-		student * prev_biggest_node;
-		while(){
-			= sort_cur;
+	student * next_cur;// = (student *)malloc(sizeof(student));
+	//student * prev_next_cur;
+	student * biggest_node;// = (student *)malloc(sizeof(student));
+	biggest_node = NULL;
+	next_cur = head;
+	while(next_cur!=NULL){
+		double biggest_average = next_cur->grades_average;
+		//student * prev_biggest_node;
+		sort_cur = next_cur;
+		while(sort_cur!=NULL){
+			if(sort_cur->grades_average>biggest_average){
+				biggest_node = sort_cur;
+				//if(prev_biggest_node->next!=NULL)
+				biggest_average = biggest_node->grades_average;
+			}
+			sort_cur = sort_cur->next;
+		}
+		printf("%d %d\n", next_cur->student_id, biggest_node->student_id);	
+		if(next_cur!=biggest_node){
+			student * tmp; tmp = NULL;
+			swap_data(tmp, next_cur);//a바뀌기
+			swap_data(next_cur, biggest_node);//a, b바꾸기
+			printf("err\n");
+			swap_data(biggest_node, tmp);//b 바꾸기
+		}
+		/*
+		biggest_node = prev_biggest_node->next;
+		prev_biggest_node->next=biggest_node->next;
 
+		prev_next_cur->next = biggest_node;
+		biggest_node->next = next_cur;
 
-
-		}		
-		student * tmp; tmp = NULL;
-		swap_data(tmp, a);//a바뀌기
-		swap_data(a, b);//a, b바꾸기
-		swap_data(b, tmp);//b 바꾸기
-		//next 바꾸기도 추가
-		sort_cur = sort_cur->next;
+		prev_next_cur = next_cur;*/
+		next_cur = next_cur->next;
 	}
 	return;
 }
 
-void swap_data(student * node1, student node2){ //노드 데이터 전환환
-	student * node1 = (student *)malloc(sizeof(studnt *));
-	student * node2 = (student *)malloc(sizeof(studnt *));
 
+void swap_data(student * node1, student * node2){ //노드 데이터 전환환
+	node1 = (student *)malloc(sizeof(student *));
+	node2 = (student *)malloc(sizeof(student *));
 	node1 -> student_id = node2 -> student_id;
 	strcpy(node1->name, node2->name);
 	strcpy(node1->password, node2->password);
 	node1->sum_of_completes = node2->sum_of_completes;
 	node1->sum_of_multiplies = node2->sum_of_multiplies;
 	node1->grades_average = node2->grades_average;
-
+	node1->subhead = node2->subhead;
 	return;
 }
 
