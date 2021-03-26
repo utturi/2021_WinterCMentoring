@@ -257,7 +257,7 @@ void input_grades(){
 			cur->sum_of_completes+=newNode->complete;
 			cur->sum_of_multiplies+=((newNode->grade[1])/10.0)*(newNode->complete);
 		}
-		cur->grades_average+=(cur->sum_of_multiplies)/(cur->sum_of_completes);	
+		cur->grades_average=(cur->sum_of_multiplies)/(cur->sum_of_completes);	
 		printf("성적을 더 입력하시려면 1, 그만 입력하시려면 0을 입력하시오: <1 or 0입력>\n");
 		getchar();
 		scanf("%d", &contnum);
@@ -300,7 +300,7 @@ void grade_array(int grade[]){
 		grade[2]+='F';
 	}
 	if(grade[1]!=0){
-		if(grade[0]%10>=7){
+		if(grade[0]%10>=7||grade[0]==100){
 			grade[1]+=5; grade[3]+='+';
 		}
 		else if(grade[0]%10>=4){
@@ -313,14 +313,14 @@ void grade_array(int grade[]){
 	return;
 }
 
-
-
+/*
+void swap(student * node1, student * node2){
+	
+	return;
+}*/
 
 //3. 학생정보등록
 void input_student(void){
-	//우선 노드에 추가한 후,
-	//파일에 쓰는 과정 넣을 것: 바로바로 업데이트
-
 	student * cur;
 	student * tmp = (student *)malloc(sizeof(student));
 	printf("=============================================\n");
@@ -350,14 +350,13 @@ void input_student(void){
 	}
 	tmp->subhead = NULL; // subhead도 NULL로 초기화 필요
 
-	//FILE *fp = fopen("Student.txt", "a+");맞는지는 모르겠지만 일단은 뒤에 덧붙여주는 방식으로 파일에 추가해줄 것
 	return;
 }
 
 ///*
 //4. 학생정보삭제
 void delete_student(void){
-	student * cur = (student *)malloc(sizeof(student));
+	student * cur;/* = (student *)malloc(sizeof(student));*/
 	student * prev;
 	char admin_pwd[18] = "admin1234";//관리자 비밀번호
 	char check_admin[18];
@@ -379,7 +378,10 @@ void delete_student(void){
 						yorn=getchar();
 						if(yorn == 'y' || yorn =='Y'){
 							strcpy(tmp_name, cur->name);
-							prev->next = cur->next;
+							if(cur==head)
+								head = head->next;
+							else
+								prev->next = cur->next;
 							free(cur);
 							printf("<%s>님의 정보를 삭제했습니다.\n", tmp_name);
 						}
